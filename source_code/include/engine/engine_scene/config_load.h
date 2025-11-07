@@ -12,11 +12,14 @@
 #include "shader.h"
 #include "model.h"
 #include "camera.h"
+#include "sprite.h"
+#include "image.h"
 
 class ConfigLoad
 {
 public:
     std::vector<Model*> loadModels();
+    std::vector<Sprite*> loadSprites();
     std::vector<Shader*> loadShaders();
 };
 

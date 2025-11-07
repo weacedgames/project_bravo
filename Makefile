@@ -44,7 +44,7 @@ local_src_graphics_opengl = $(path_src_graphics)/opengl/graphics.cpp $(path_src_
 
 
 path_src_entity = ./source_code/src/engine/engine_entity
-local_src_entity_entity = $(path_src_entity)/entity.cpp $(path_src_entity)/model.cpp $(path_src_entity)/geometry.cpp $(path_src_entity)/camera.cpp
+local_src_entity_entity = $(path_src_entity)/entity.cpp $(path_src_entity)/model.cpp $(path_src_entity)/geometry.cpp $(path_src_entity)/camera.cpp $(path_src_entity)/sprite.cpp
 
 
 path_src_physics = ./source_code/src/engine/engine_physics

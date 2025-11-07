@@ -21,12 +21,15 @@ void Game::initiate()
     ConfigLoad configLoad;
     loaded_models = configLoad.loadModels();
     loaded_shaders = configLoad.loadShaders();
+    loaded_sprites = configLoad.loadSprites();
     loaded_geometry.push_back(new Geometry(0));
+
+    
 
     // Building Scene
     SceneLoad sceneLoad;
     std::vector<std::vector<std::string>> files = sceneLoad.loadEntities();
-    loaded_entities = sceneLoad.generateEntities(files, loaded_shaders, loaded_models, loaded_geometry, &camera);
+    loaded_entities = sceneLoad.generateEntities(files, loaded_shaders, loaded_models, loaded_sprites, loaded_geometry, &camera);
 };
 
 Game::~Game()
@@ -108,6 +111,38 @@ void Game::processInputKeyboard(GLFWwindow *window, Entity *entity)
 
 void Game::processInputMouse()
 {
+    // This shit is fucking up my code >:(
+    //                    _____
+    //                   (     \
+    //                  (    \  \
+    //                 (      \  \/\
+    //                (        \    |
+    //               (          )    |
+    //              (            )\__/
+    //              (____________)  
+    //    ====================================
+    //              |    \  /    |
+    //              | ___ \/ ___ |
+    //           ( )|| * |__| * ||( )
+    //          (  )||___|  |___||(  )
+    //           ( )|            |( )
+    //            ()|    (--)    |()
+    //            ()|            |()
+    //           ( )|    ====    |( )
+    //            ()|            |()
+    //               \          /
+    //                \________/ 
+    //                   |  |
+    //                  _|  |_
+    //             ____/ \  / \_____
+    //            /    \  \/  /     \
+    //                  \ /\ /
+    //                   /  \
+    //          
+    
+
+
+
     if(Mouse::cursor_active)
     {
         camera.processMouseInput(Mouse::cursor_xPos, Mouse::cursor_yPos);

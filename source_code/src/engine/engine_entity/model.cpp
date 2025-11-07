@@ -3,7 +3,6 @@
 Model::Model(std::string const &path, int setId)
 {
 
-
     modelPath = path;
     id = setId;
     loadModel(path);

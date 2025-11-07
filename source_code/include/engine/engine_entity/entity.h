@@ -11,7 +11,7 @@
 #include "model.h"
 #include "camera.h"
 #include "geometry.h"
-
+#include "Sprite.h"
 
 class Entity
 {
@@ -20,6 +20,7 @@ private:
     Camera* entity_camera;
     Shader* entity_shader;
     Model* entity_model;
+    Sprite* entity_sprite;
     Geometry* entity_geometry;
 
     int entity_id;
@@ -41,6 +42,7 @@ public:
     void setCamera(Camera* handleCamera);
     void setShader(Shader* handleShader);
     void setModel(Model* handleModel);
+    void setSprite(Sprite* handleSprite);
     void setGeometry(Geometry* handleGeometry);
 
     void setID(int id);
@@ -61,6 +63,7 @@ public:
     Camera* returnCamera();
     Shader* returnShader();
     Model* returnModel();
+    Sprite* returnSprite();
     Geometry* returnGeometry();
     
     int returnID();

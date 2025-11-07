@@ -59,9 +59,9 @@ int Graphics::initiate()
 void Graphics::test()
 {
     if(initiate()){
-        Camera camera(window_width, window_height, glm::vec3(0.0f, 1.0f, -1.0f));
-        Shader ourShader("./project/assets/shaders/modelShader/modelShader.vert", "./project/assets/shaders/modelShader/modelShader.frag", 0);
-        Model modelHangar("./project/assets/models/project_bravo_map_hangar/project_bravo_map_hangar.obj",0);
+        Camera camera(window_width, window_height, glm::vec3(0.0f, 0.0f, 15.0f));
+        Shader ourShader("./scene/assets/shaders/modelShader/modelShader.vert", "./scene/assets/shaders/modelShader/modelShader.frag", 0);
+        Model modelHangar("./scene/assets/models/project_bravo_character/project_bravo_character.obj",0);
         
         float degrees = 180.0f;
         float pi = 3.14159265358979323846;
@@ -76,9 +76,9 @@ void Graphics::test()
             glm::mat4 model = glm::mat4(1.0f);
             
             model = glm::translate(model, glm::vec3(0.0f));
-            model = glm::scale(model, glm::vec3(1.5f));
-            model = glm::rotate(model, degrees * ( pi/180) , glm::vec3(0.0f, 0.0f, 1.0f));
-            model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
+            model = glm::scale(model, glm::vec3(5.0f));
+            model = glm::rotate(model, degrees * ( pi/180) , glm::vec3(0.0f, 180.0f, 0.0f));
+            model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 
             ourShader.activate();
             ourShader.setMat4("projection", projection);
@@ -94,193 +94,124 @@ void Graphics::test()
     }
 };
 
-void Graphics::render(std::vector<Entity*> gameobjects, glm::mat4 projection, glm::mat4 view)
+
+
+void Graphics::render(std::vector<Entity*> entities, glm::mat4 projection, glm::mat4 view)
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //////////////////////
-    // Scene
-    //////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // World Render
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
-    for(int i=0; i<gameobjects.size(); i++)
+    for(int i=0; i<entities.size(); i++)
     {
-        if(gameobjects[i]->returnEnableRender() == true)
+        if(entities[i]->returnEnableRender() == true && entities[i]->returnType() == "model" || entities[i]->returnType() == "geometry" || entities[i]->returnType() == "collider")
         {
-            Shader& gameobjectShader = *gameobjects[i]->returnShader();
+            Shader& entitiesShader = *entities[i]->returnShader();
 
-            glm::vec3 converted_position = gameobjects[i]->returnPosition() / map_dimmensions;
-            glm::vec3 converted_scale = gameobjects[i]->returnScale() / map_dimmensions;
+            glm::vec3 converted_position = entities[i]->returnPosition() / map_dimmensions;
+            glm::vec3 converted_scale = entities[i]->returnScale() / map_dimmensions;
 
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, converted_position);
-            model = glm::rotate(model, gameobjects[i]->returnRotation().x * ( PI/180) , glm::vec3(1.0f, 0.0f, 0.0f));
-            model = glm::rotate(model, gameobjects[i]->returnRotation().y * ( PI/180) , glm::vec3(0.0f, 1.0f, 0.0f));
-            model = glm::rotate(model, gameobjects[i]->returnRotation().z * ( PI/180) , glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::rotate(model, entities[i]->returnRotation().x * ( PI/180) , glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, entities[i]->returnRotation().y * ( PI/180) , glm::vec3(0.0f, 1.0f, 0.0f));
+            model = glm::rotate(model, entities[i]->returnRotation().z * ( PI/180) , glm::vec3(0.0f, 0.0f, 1.0f));
             model = glm::scale(model, converted_scale);
             
-            gameobjects[i]->returnShader()->activate();
-            gameobjects[i]->returnShader()->setMat4("projection", projection);
-            gameobjects[i]->returnShader()->setMat4("view", view);
-            gameobjects[i]->returnShader()->setMat4("model", model);
+            entities[i]->returnShader()->activate();
+            entities[i]->returnShader()->setMat4("projection", projection);
+            entities[i]->returnShader()->setMat4("view", view);
+            entities[i]->returnShader()->setMat4("model", model);
 
-            if(gameobjects[i]->returnType() == "model")
+            if(entities[i]->returnType() == "model")
             {
-                gameobjects[i]->returnModel()->draw(gameobjectShader);
+                entities[i]->returnModel()->draw(entitiesShader);
             }
 
-            if(gameobjects[i]->returnType() == "geometry")
+            if(entities[i]->returnType() == "geometry")
             {
-                    gameobjects[i]->returnShader()->setVec3("color", gameobjects[i]->returnColor() );
-                    gameobjects[i]->returnGeometry()->draw(gameobjectShader);
+                    entities[i]->returnShader()->setVec3("color", entities[i]->returnColor() );
+                    entities[i]->returnGeometry()->draw(entitiesShader);
             }
 
-            if(gameobjects[i]->returnType() == "collider")
+            if(entities[i]->returnType() == "collider")
             {
-                    gameobjects[i]->returnShader()->setVec3("color", gameobjects[i]->returnColor() );
-                    gameobjects[i]->returnGeometry()->draw(gameobjectShader);
+                    entities[i]->returnShader()->setVec3("color", entities[i]->returnColor() );
+                    entities[i]->returnGeometry()->draw(entitiesShader);
             }
 
-            //if(gameobjects[i]->returnEnableBoundingBox() == true)
+            //if(entities[i]->returnEnableBoundingBox() == true)
             //{
             //    Shader boundingBoxShader("./project/assets/shaders/boundingBoxShader/boundingBoxShader.vert", "./project/assets/shaders/boundingBoxShader/boundingBoxShader.frag");
             //    boundingBoxShader.activate();
             //    boundingBoxShader.setMat4("projection", projection);
             //    boundingBoxShader.setMat4("view", view);
             //    boundingBoxShader.setMat4("model", model);
-            //    gameobjects[i]->returnModel()->drawBoundingBox();
+            //    entities[i]->returnModel()->drawBoundingBox();
             //}
 
         }
     }
 
-    //////////////////////
-    // Overlay
-    //////////////////////
 
-    // Need to deal this shit show too -_-
-    
-//    // Models
-//    for(int i=0; i<gameobjects.size(); i++)
-//    {
-//        if(gameobjects[i]->returnType() == "overlay")
-//        {
-//            if(gameobjects[i]->returnEnableRender() == true)
-//            {
-//                glClear(GL_DEPTH_BUFFER_BIT);
-//                Shader& fpsShader = *gameobjects[i]->returnShader();
-//                glm::mat4 fpsModel = glm::mat4(1.0f);
-//                fpsModel = glm::translate(fpsModel, gameobjects[0]->returnPosition() / map_dimmensions);
-//                fpsModel = glm::rotate(fpsModel, glm::radians( gameobjects[i]->returnRotation().x ) , glm::vec3(1.0f, 0.0f, 0.0f));
-//                fpsModel = glm::rotate(fpsModel, glm::radians( gameobjects[i]->returnRotation().y ) , glm::vec3(0.0f, 1.0f, 0.0f));
-//                fpsModel = glm::rotate(fpsModel, glm::radians( gameobjects[i]->returnRotation().z ) , glm::vec3(0.0f, 0.0f, 1.0f));
-//                fpsModel = glm::rotate(fpsModel, glm::radians( gameobjects[i]->returnRotation().y - gameobjects[0]->returnCamera()->camera_yaw ) , glm::vec3(0.0f, 1.0f, 0.0f));
-//                fpsModel = glm::rotate(fpsModel, glm::radians( gameobjects[i]->returnRotation().x - gameobjects[0]->returnCamera()->camera_pitch ) , glm::vec3(1.0f, 0.0f, 0.0f));
-//                fpsModel = glm::translate(fpsModel, glm::vec3(-7.0f, -5.0f, 20.0f) / map_dimmensions);
-//                fpsModel = glm::scale(fpsModel, gameobjects[i]->returnScale() / map_dimmensions);
-//
-//                fpsShader.activate();
-//                fpsShader.setMat4("projection", projection);
-//                fpsShader.setMat4("view", view );
-//                fpsShader.setMat4("model", fpsModel);
-//
-//                gameobjects[i]->returnModel()->draw(fpsShader);
-//            }
-//        }
-//    }
 
-    // Textures
-//    if(!overlay_inititated)
-//    {
-//        
-//        float vertices[] = {
-//            // Positions                                           // Texture Coordinates
-//            0.0f                , float(window_height) , 0.0f,           0.0f, 1.0f,
-//            float(window_width) , float(window_height) , 0.0f,           1.0f, 1.0f,
-//            float(window_width) , 0.0f                 , 0.0f,           1.0f, 0.0f,
-//            0.0f                , 0.0f                 , 0.0f,           0.0f, 0.0f
-//
-//        };
-//
-//        unsigned int indices[] = {
-//        0, 1, 2,
-//        2, 3, 0
-//        };
-//
-//        glGenVertexArrays(1, &VAO);
-//        glGenBuffers(1, &VBO);
-//        glGenBuffers(1, &EBO);
-//
-//        glBindVertexArray(VAO);
-//
-//        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-//        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-//
-//        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-//        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-//
-//        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
-//        glEnableVertexAttribArray(0);
-//
-//        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-//        glEnableVertexAttribArray(1);
-//
-//        glBindVertexArray(0);
-//
-//        glGenTextures( 1, &texture);
-//        glBindTexture( GL_TEXTURE_2D, texture);
-//
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//
-//        stbi_set_flip_vertically_on_load(true);
-//
-//        int width, height, nrChannels;
-//        unsigned char* data;
-//        data = stbi_load("./project/assets/textures/overlay_crosshair.png", &width, &height, &nrChannels, 0);
-//
-//        if(data)
-//        {
-//            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-//            glGenerateMipmap(GL_TEXTURE_2D);
-//        }
-//        else
-//        {
-//            std::cout << "ERROR::TEXTURE::Failed_TO_LOAD\n" << std::endl;
-//        }
-//
-//        stbi_image_free(data);
-//
-//        overlay_inititated = true;
-//    }
-//    else
-//    {
-//        glm::mat4 proj = glm::ortho(0.0f, (float)window_width, (float)window_height, 0.0f, -1.0f, 1.0f);
-//
-//        Shader overlayShader("./project/assets/shaders/overlayShader/overlayShader.vert", "./project/assets/shaders/overlayShader/overlayShader.frag");
-//        overlayShader.activate();
-//        overlayShader.setMat4("projection", proj );
-//        overlayShader.setMat4("view",  glm::mat4(1.0f));
-//        overlayShader.setMat4("model", glm::mat4(1.0f));
-//        
-//        glDisable(GL_DEPTH_TEST);
-//
-//        glEnable(GL_BLEND);
-//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//
-//        glActiveTexture(GL_TEXTURE0);
-//        glBindTexture(GL_TEXTURE_2D, texture);
-//
-//        glBindVertexArray(VAO);
-//        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-//        glBindVertexArray(0);
-//
-//        glEnable(GL_DEPTH_TEST);
-//    }
-//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // Overlay Models
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    for(int i=0; i<entities.size(); i++)
+    {
+        if(entities[i]->returnEnableRender() == true && entities[i]->returnType() == "overlay")
+        {
+            glClear(GL_DEPTH_BUFFER_BIT);
+            Shader& entitiesShader = *entities[i]->returnShader();
+
+            glm::mat4 fpsModel = glm::mat4(1.0f);
+            fpsModel = glm::translate(fpsModel, entities[0]->returnPosition() / map_dimmensions);
+            fpsModel = glm::rotate(fpsModel, glm::radians( entities[i]->returnRotation().x ) , glm::vec3(1.0f, 0.0f, 0.0f));
+            fpsModel = glm::rotate(fpsModel, glm::radians( entities[i]->returnRotation().y ) , glm::vec3(0.0f, 1.0f, 0.0f));
+            fpsModel = glm::rotate(fpsModel, glm::radians( entities[i]->returnRotation().z ) , glm::vec3(0.0f, 0.0f, 1.0f));
+            fpsModel = glm::rotate(fpsModel, glm::radians( entities[i]->returnRotation().y - entities[0]->returnCamera()->camera_yaw ) , glm::vec3(0.0f, 1.0f, 0.0f));
+            fpsModel = glm::rotate(fpsModel, glm::radians( entities[i]->returnRotation().x - entities[0]->returnCamera()->camera_pitch ) , glm::vec3(1.0f, 0.0f, 0.0f));
+            fpsModel = glm::translate(fpsModel, glm::vec3(-7.0f, -5.0f, 20.0f) / map_dimmensions);
+            fpsModel = glm::scale(fpsModel, entities[i]->returnScale() / map_dimmensions);
+
+            entitiesShader.activate();
+            entitiesShader.setMat4("projection", projection);
+            entitiesShader.setMat4("view", view );
+            entitiesShader.setMat4("model", fpsModel);
+
+            entities[i]->returnModel()->draw(entitiesShader);           
+        }  
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // Overlay Sprites
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    for(int i=0; i<entities.size(); i++)
+    {
+        if(entities[i]->returnEnableRender() == true && entities[i]->returnType() == "sprite")
+        {
+            glClear(GL_DEPTH_BUFFER_BIT);
+            Shader& entitieShader = *entities[i]->returnShader();
+
+            glm::mat4 projection = glm::ortho(0.0f, (float)window_width, (float)window_height, 0.0f, -1.0f, 1.0f);
+        
+            entitieShader.activate();
+            entitieShader.setMat4("projection", projection );
+            entitieShader.setMat4("view",  glm::mat4(1.0f));
+            entitieShader.setMat4("model", glm::mat4(1.0f));
+
+            entities[i]->returnSprite()->draw(entitieShader);     
+        }
+    }
+
+
     glfwSwapBuffers(window);
-    glfwPollEvents();
-//    
+    glfwPollEvents(); 
 };

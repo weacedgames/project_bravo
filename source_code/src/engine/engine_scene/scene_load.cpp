@@ -27,7 +27,7 @@ std::vector<std::vector<std::string>> SceneLoad::loadEntities()
     return files;
 };
 
-std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::string>> files, std::vector<Shader*> loaded_shaders, std::vector<Model*> loaded_models, std::vector<Geometry*> loaded_geometry, Camera* camera)
+std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::string>> files, std::vector<Shader*> loaded_shaders, std::vector<Model*> loaded_models, std::vector<Sprite*> loaded_sprites, std::vector<Geometry*> loaded_geometry, Camera* camera)
 {
     std::vector<Entity*> entities;
 
@@ -43,6 +43,7 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
 
         int shader_id = 0;
         int model_id = 0;
+        int sprite_id = 0;
 
         std::string pathImage = "";
 
@@ -128,6 +129,40 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
                         enableBoundingBox = std::stoi(value);
                 }
 
+                if(type=="sprite")
+                {
+                    if(key=="SHADERID")
+                        shader_id = std::stoi(value);
+                    if(key=="SPRITEID")
+                        sprite_id = std::stoi(value);
+
+                    if(key=="POSITIONX")
+                        xPos = std::stof(value);
+                    if(key=="POSITIONY")
+                        yPos = std::stof(value);
+                    if(key=="POSITIONZ")
+                        zPos = std::stof(value);
+
+                    if(key=="SCALEX")
+                        xScale = std::stof(value);
+                    if(key=="SCALEY")
+                        yScale = std::stof(value);
+                    if(key=="SCALEZ")
+                        zScale = std::stof(value);
+
+                    if(key=="ROTATIONX")
+                        xRotation = std::stof(value);
+                    if(key=="ROTATIONY")
+                        yRotation = std::stof(value);
+                    if(key=="ROTATIONZ")
+                        zRotation = std::stof(value);
+
+                    if(key=="ENABLERENDER")
+                        enableRender = std::stoi(value);
+                    if(key=="ENABLEBOUNDINGBOX")
+                        enableBoundingBox = std::stoi(value);
+                }
+
                 if(type=="geometry")
                 {
                     if(key=="SHADERID")
@@ -175,12 +210,12 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
 
                 if(type=="overlay")
                 {
-                    if(key=="VERTEXPATH")
-                        pathVertexShader = value;
-                    if(key=="FRAGMENTPATH")
-                        pathFragmentShader = value;
+
+                    if(key=="SHADERID")
+                        shader_id = std::stoi(value);
                     if(key=="MODELID")
                         model_id = std::stoi(value);
+
 
                     if(key=="POSITIONX")
                         xPos = std::stof(value);
@@ -212,16 +247,16 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
             }
         }
 
-        Entity* tempGameObj = new Entity();
+        Entity* tempEntity = new Entity();
 
         if(type=="camera")
         {
-            tempGameObj->setCamera(camera);
-            tempGameObj->setName(name);
-            tempGameObj->setTag(tag);
-            tempGameObj->setType(type);
-            tempGameObj->setPosition(glm::vec3(xPos, yPos, zPos));
-            entities.push_back(tempGameObj);
+            tempEntity->setCamera(camera);
+            tempEntity->setName(name);
+            tempEntity->setTag(tag);
+            tempEntity->setType(type);
+            tempEntity->setPosition(glm::vec3(xPos, yPos, zPos));
+            entities.push_back(tempEntity);
         }
 
         if(type=="model")
@@ -229,50 +264,84 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
             for(int subIndex=0; subIndex<loaded_shaders.size(); subIndex++)
             {
                 if(shader_id == loaded_shaders[subIndex]->assetShaderId)
-                    tempGameObj->setShader(loaded_shaders[subIndex]);
+                    tempEntity->setShader(loaded_shaders[subIndex]);
             }
 
             for(int subIndex=0; subIndex<loaded_models.size(); subIndex++)
             {
                 if(model_id == loaded_models[subIndex]->id)
-                    tempGameObj->setModel(loaded_models[subIndex]);
+                    tempEntity->setModel(loaded_models[subIndex]);
 
             }
 
-            tempGameObj->setName(name);
-            tempGameObj->setTag(tag);
-            tempGameObj->setType(type);
-            tempGameObj->setPosition(glm::vec3(xPos, yPos, zPos));
-            tempGameObj->setScale(glm::vec3(xScale, yScale, zScale));
-            tempGameObj->setRotation(glm::vec3( xRotation, yRotation, zRotation));
-            tempGameObj->setEnableRender(enableRender);
-            tempGameObj->setEnableBoundingBox(enableBoundingBox);
-            entities.push_back(tempGameObj);
+            tempEntity->setName(name);
+            tempEntity->setTag(tag);
+            tempEntity->setType(type);
+            tempEntity->setPosition(glm::vec3(xPos, yPos, zPos));
+            tempEntity->setScale(glm::vec3(xScale, yScale, zScale));
+            tempEntity->setRotation(glm::vec3( xRotation, yRotation, zRotation));
+            tempEntity->setEnableRender(enableRender);
+            tempEntity->setEnableBoundingBox(enableBoundingBox);
+            entities.push_back(tempEntity);
         }
+
+        
+
+
+
+        if(type=="sprite")
+        {
+            for(int subIndex=0; subIndex<loaded_shaders.size(); subIndex++)
+            {
+                if(shader_id == loaded_shaders[subIndex]->assetShaderId)
+                    tempEntity->setShader(loaded_shaders[subIndex]);
+            }
+
+            for(int subIndex=0; subIndex<loaded_sprites.size(); subIndex++)
+            {
+                if(sprite_id == loaded_sprites[subIndex]->assetSpriteID)
+                {
+                    tempEntity->setSprite(loaded_sprites[subIndex]);
+                }
+            }
+
+            tempEntity->setName(name);
+            tempEntity->setTag(tag);
+            tempEntity->setType(type);
+            tempEntity->setPosition(glm::vec3(xPos, yPos, zPos));
+            tempEntity->setScale(glm::vec3(xScale, yScale, zScale));
+            tempEntity->setRotation(glm::vec3( xRotation, yRotation, zRotation));
+            tempEntity->setEnableRender(enableRender);
+            tempEntity->setEnableBoundingBox(enableBoundingBox);
+            entities.push_back(tempEntity);
+        }
+
+
 
         if(type=="overlay")
         {
             for(int subIndex=0; subIndex<loaded_shaders.size(); subIndex++)
             {
-                if(pathVertexShader == loaded_shaders[subIndex]->vertex_path && pathFragmentShader == loaded_shaders[subIndex]->fragment_path)
-                    tempGameObj->setShader(loaded_shaders[subIndex]);
+                if(shader_id == loaded_shaders[subIndex]->assetShaderId)
+                    tempEntity->setShader(loaded_shaders[subIndex]);
             }
 
             for(int subIndex=0; subIndex<loaded_models.size(); subIndex++)
             {
                 if(model_id == loaded_models[subIndex]->id)
-                    tempGameObj->setModel(loaded_models[subIndex]);
+                    tempEntity->setModel(loaded_models[subIndex]);
+
             }
 
-            tempGameObj->setName(name);
-            tempGameObj->setTag(tag);
-            tempGameObj->setType(type);
-            tempGameObj->setPosition(glm::vec3(xPos, yPos, zPos));
-            tempGameObj->setScale(glm::vec3(xScale, yScale, zScale));
-            tempGameObj->setRotation(glm::vec3( xRotation, yRotation, zRotation));
-            tempGameObj->setEnableRender(enableRender);
-            tempGameObj->setEnableBoundingBox(enableBoundingBox);
-            entities.push_back(tempGameObj);
+            tempEntity->setName(name);
+            tempEntity->setTag(tag);
+            tempEntity->setType(type);
+            tempEntity->setPosition(glm::vec3(xPos, yPos, zPos));
+            tempEntity->setScale(glm::vec3(xScale, yScale, zScale));
+            tempEntity->setRotation(glm::vec3( xRotation, yRotation, zRotation));
+            tempEntity->setEnableRender(enableRender);
+            tempEntity->setEnableBoundingBox(enableBoundingBox);
+            entities.push_back(tempEntity);
         }
 
         if(type=="geometry")
@@ -280,21 +349,21 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
             for(int subIndex=0; subIndex<loaded_shaders.size(); subIndex++)
             {
                 if(shader_id == loaded_shaders[subIndex]->assetShaderId)
-                    tempGameObj->setShader(loaded_shaders[subIndex]);
+                    tempEntity->setShader(loaded_shaders[subIndex]);
             }
 
-            tempGameObj->setGeometry(loaded_geometry[0]);
-            tempGameObj->setName(name);
-            tempGameObj->setTag(tag);
-            tempGameObj->setType(type);
-            tempGameObj->setPosition(glm::vec3(xPos, yPos, zPos));
-            tempGameObj->setScale(glm::vec3(xScale, yScale, zScale));
-            tempGameObj->setRotation(glm::vec3( xRotation, yRotation, zRotation));
-            tempGameObj->setEnableRender(enableRender);
-            tempGameObj->setEnableBoundingBox(enableBoundingBox);
-            tempGameObj->setEnableCollider(enableCollider);
-            tempGameObj->setColor( glm::vec3( colorRed, colorGreen, colorBlue) );
-            entities.push_back(tempGameObj);
+            tempEntity->setGeometry(loaded_geometry[0]);
+            tempEntity->setName(name);
+            tempEntity->setTag(tag);
+            tempEntity->setType(type);
+            tempEntity->setPosition(glm::vec3(xPos, yPos, zPos));
+            tempEntity->setScale(glm::vec3(xScale, yScale, zScale));
+            tempEntity->setRotation(glm::vec3( xRotation, yRotation, zRotation));
+            tempEntity->setEnableRender(enableRender);
+            tempEntity->setEnableBoundingBox(enableBoundingBox);
+            tempEntity->setEnableCollider(enableCollider);
+            tempEntity->setColor( glm::vec3( colorRed, colorGreen, colorBlue) );
+            entities.push_back(tempEntity);
         }
 
     }

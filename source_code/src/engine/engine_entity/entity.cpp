@@ -4,6 +4,7 @@
 void Entity::setCamera(Camera* handleCamera){entity_camera = handleCamera;};
 void Entity::setShader(Shader* handleShader){entity_shader = handleShader;};
 void Entity::setModel(Model* handleModel){entity_model = handleModel;};
+void Entity::setSprite(Sprite* handleSprite){entity_sprite =  handleSprite;};
 void Entity::setGeometry(Geometry* handleGeometry){entity_geometry = handleGeometry;};
 
 void Entity::setType(std::string type){entity_type = type;};
@@ -26,6 +27,7 @@ void Entity::setEnableCollider(bool enable){enableCollider = enable;};
 Camera* Entity::returnCamera(){return entity_camera;};
 Shader* Entity::returnShader(){return entity_shader;};
 Model* Entity::returnModel(){return entity_model;};
+Sprite* Entity::returnSprite(){return entity_sprite;};
 Geometry* Entity::returnGeometry(){return entity_geometry;};
 
 int Entity::returnID(){return entity_id;};

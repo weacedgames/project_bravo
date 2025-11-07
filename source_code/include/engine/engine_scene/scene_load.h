@@ -22,7 +22,7 @@ public:
     std::vector<Shader*> loadShaders();
     std::vector<Model*> loadModels();
     std::vector<std::vector<std::string>> loadEntities();
-    std::vector<Entity*> generateEntities(std::vector<std::vector<std::string>> files, std::vector<Shader*> loaded_shaders, std::vector<Model*> loaded_models, std::vector<Geometry*> loaded_geometry, Camera* camera);
+    std::vector<Entity*> generateEntities(std::vector<std::vector<std::string>> files, std::vector<Shader*> loaded_shaders, std::vector<Model*> loaded_models, std::vector<Sprite*> loaded_sprites, std::vector<Geometry*> loaded_geometry, Camera* camera);
 };
 
 #endif

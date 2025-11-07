@@ -32,10 +32,7 @@ public:
     GLFWwindow *window;
     
 
-public:
-    unsigned int VAO, VBO, EBO;
-    unsigned int texture;
-    
+
 public:
     float deltaTime;
     float lastFrameTime;

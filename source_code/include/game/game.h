@@ -29,6 +29,8 @@
 #include "raycast.h"
 #include "config_load.h"
 
+#include "sprite.h"
+
 
 #pragma comment(lib, "winmm.lib")
 
@@ -45,6 +47,7 @@ class Game
 private:
     std::vector<Shader*> loaded_shaders;
     std::vector<Model*> loaded_models;
+    std::vector<Sprite*> loaded_sprites;
     std::vector<Geometry*> loaded_geometry;
     std::vector<Entity*> loaded_entities;
 
