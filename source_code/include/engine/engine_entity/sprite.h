@@ -21,7 +21,7 @@ private:
 public:
     int assetSpriteID;
 
-    Sprite( float xPos, float yPos, float width, float height, std::string const &texture_filePath, int setSpriteID);
+    Sprite( float width, float height, std::string const &texture_filePath, int setSpriteID);
 
     void draw(Shader &shader);
 };

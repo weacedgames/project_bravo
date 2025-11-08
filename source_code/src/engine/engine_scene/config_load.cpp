@@ -169,6 +169,9 @@ std::vector<Sprite*> ConfigLoad::loadSprites()
         std::string fileName = "";
         std::string fileType = "";
 
+        float image_width = 0;
+        float image_height = 0;
+
 
         for(int subIndex=0; subIndex<files[index].size(); subIndex++)
         {
@@ -189,10 +192,15 @@ std::vector<Sprite*> ConfigLoad::loadSprites()
                     fileName = value;
                 if(key=="FILETYPE")
                     fileType = value;
+                if(key=="IMAGEWIDTH")
+                    image_width = std::stof(value);
+                if(key=="IMAGEHEIGHT")
+                    image_height = std::stof(value);
             }
         }
 
-        loaded_sprites.push_back(new Sprite( 0.0f, 0.0f, 1800.0f, 900.0f, directoryRoot + directory + fileName, std::stoi(id)));
+        // I will need to add image size to asset config file
+        loaded_sprites.push_back(new Sprite( image_width, image_height, directoryRoot + directory + fileName, std::stoi(id)));
     }
     return loaded_sprites;
 };

@@ -184,7 +184,7 @@ void Graphics::render(std::vector<Entity*> entities, glm::mat4 projection, glm::
             entitiesShader.setMat4("view", view );
             entitiesShader.setMat4("model", fpsModel);
 
-            entities[i]->returnModel()->draw(entitiesShader);           
+            entities[i]->returnModel()->draw(entitiesShader);       
         }  
     }
 
@@ -201,11 +201,20 @@ void Graphics::render(std::vector<Entity*> entities, glm::mat4 projection, glm::
             Shader& entitieShader = *entities[i]->returnShader();
 
             glm::mat4 projection = glm::ortho(0.0f, (float)window_width, (float)window_height, 0.0f, -1.0f, 1.0f);
-        
+            
+            glm::vec3 converted_position = entities[i]->returnPosition();
+            glm::vec3 converted_scale = entities[i]->returnScale();
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, converted_position);
+            model = glm::rotate(model, entities[i]->returnRotation().z * ( PI/180) , glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::scale(model, converted_scale);
+
             entitieShader.activate();
             entitieShader.setMat4("projection", projection );
             entitieShader.setMat4("view",  glm::mat4(1.0f));
-            entitieShader.setMat4("model", glm::mat4(1.0f));
+            entitieShader.setMat4("model", model);
+
 
             entities[i]->returnSprite()->draw(entitieShader);     
         }

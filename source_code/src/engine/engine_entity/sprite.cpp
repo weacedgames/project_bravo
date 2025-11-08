@@ -1,6 +1,6 @@
 #include "Sprite.h"
 
-Sprite::Sprite( float xPos, float yPos, float width, float height, std::string const &texture_filePath, int setSpriteID)
+Sprite::Sprite(float width, float height, std::string const &texture_filePath, int setSpriteID)
 {
     assetSpriteID = setSpriteID;
     
@@ -11,12 +11,13 @@ Sprite::Sprite( float xPos, float yPos, float width, float height, std::string c
     float vertices[] = 
     {
         // Positions   // Sprite Coordinates
-        xPos  , height , 0.0f, 0.0f, 1.0f,
-        width , height , 0.0f, 1.0f, 1.0f,
-        width , yPos   , 0.0f, 1.0f, 0.0f,
-        xPos  , yPos   , 0.0f, 0.0f, 0.0f
+        (-(width/2)/1000)  , ( (height/2)/1000) , 0.0f, 0.0f, 1.0f,
+        ( (width/2)/1000)  , ( (height/2)/1000) , 0.0f, 1.0f, 1.0f,
+        ( (width/2)/1000)  , (-(height/2)/1000)   , 0.0f, 1.0f, 0.0f,
+        (-(width/2)/1000)  , (-(height/2)/1000)   , 0.0f, 0.0f, 0.0f
 
     };
+
 
 
     unsigned int indices[] = 
