@@ -920,15 +920,14 @@
             "id":32,
             "title":"Move texture overlay loading away from graphics",
             "description":"Move texture overlay loading away from graphics and into game like everything else. I think this is causing a memory leak by generating a shader every game loop.",
-
-            "completed":false,
+            "completed":true,
             "username_created_by":"stonedufodude",
-            "username_completed_by":"",
+            "username_completed_by":"stonedufodude",
             "date_created":"10/11/2025",
-            "date_completed":"",
+            "date_completed":"11/7/2025",
             "tags":["programming","c++","shader"],
             "comments":[
-                                {
+                {
                     "username":"stonedufodude",
                     "comment":"Making loading images/textures just like shaders and models. Using a config to load it into the engine.",
                     "tags":[],
@@ -943,11 +942,11 @@
             "id":33,
             "title":"Move model overlay loading away from graphics",
             "description":"Move model overlay loading away from graphics and into game like everything else. I think this is causing a memory leak by generating a shader every game loop.",
-            "completed":false,
+            "completed":true,
             "username_created_by":"stonedufodude",
-            "username_completed_by":"",
+            "username_completed_by":"stonedufodude",
             "date_created":"10/11/2025",
-            "date_completed":"",
+            "date_completed":"11/4/2025",
             "tags":["programming","c++"],
             "comments":[
                 {
@@ -965,7 +964,6 @@
             "id":34,
             "title":"Make a Audio class",
             "description":"Make a Audio class",
-
             "completed":false,
             "username_created_by":"stonedufodude",
             "username_completed_by":"",
