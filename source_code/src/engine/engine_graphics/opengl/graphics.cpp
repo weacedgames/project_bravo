@@ -142,21 +142,19 @@ void Graphics::render(std::vector<Entity*> entities, glm::mat4 projection, glm::
                     entities[i]->returnShader()->setVec3("color", entities[i]->returnColor() );
                     entities[i]->returnGeometry()->draw(entitiesShader);
             }
-
-            //if(entities[i]->returnEnableBoundingBox() == true)
-            //{
-            //    Shader boundingBoxShader("./project/assets/shaders/boundingBoxShader/boundingBoxShader.vert", "./project/assets/shaders/boundingBoxShader/boundingBoxShader.frag");
-            //    boundingBoxShader.activate();
-            //    boundingBoxShader.setMat4("projection", projection);
-            //    boundingBoxShader.setMat4("view", view);
-            //    boundingBoxShader.setMat4("model", model);
-            //    entities[i]->returnModel()->drawBoundingBox();
-            //}
+            
+            if(entities[i]->returnEnableBoundingBox() == true)
+            {
+                Shader& boundingBoxShader = *entities[i]->returnShaderBoundingBox();
+                boundingBoxShader.activate();
+                boundingBoxShader.setMat4("projection", projection);
+                boundingBoxShader.setMat4("view", view);
+                boundingBoxShader.setMat4("model", model);
+                entities[i]->returnModel()->drawBoundingBox();
+            }
 
         }
     }
-
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Overlay Models

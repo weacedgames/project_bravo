@@ -16,7 +16,6 @@ Game::Game(): graphics(WINDOW_WIDTH, WINDOW_HEIGHT, map_dimmensions), camera(WIN
 
 void Game::initiate()
 {
-
     // Loading Assets
     ConfigLoad configLoad;
     loaded_models = configLoad.loadModels();
@@ -24,12 +23,14 @@ void Game::initiate()
     loaded_sprites = configLoad.loadSprites();
     loaded_geometry.push_back(new Geometry(0));
 
-    
-
     // Building Scene
     SceneLoad sceneLoad;
     std::vector<std::vector<std::string>> files = sceneLoad.loadEntities();
     loaded_entities = sceneLoad.generateEntities(files, loaded_shaders, loaded_models, loaded_sprites, loaded_geometry, &camera);
+
+    SceneSave sceneSave;
+
+    sceneSave.save(loaded_entities);
 };
 
 Game::~Game()
@@ -81,8 +82,6 @@ void Game::mainloop()
         // Render
         ///////////////////////////////////////
         graphics.render(loaded_entities, projection, view);
-
-
     }
 };
 

@@ -19,7 +19,7 @@ void SceneSave::save(std::vector<Entity*> entities)
             if(entities[i]->returnType() == "camera")
             {
                 file_write << "TYPE=" << entities[i]->returnType() << std::endl;
-                file_write << "NAME=N/A" << std::endl;
+                file_write << "NAME=" << entities[i]->returnName() << std::endl;
                 file_write << "TAG=" << entities[i]->returnTag() << std::endl;
 
                 file_write << "POSITIONX=" << entities[i]->returnPosition().x << std::endl;
@@ -34,11 +34,12 @@ void SceneSave::save(std::vector<Entity*> entities)
             if(entities[i]->returnType() == "model")
             {
                 file_write << "TYPE=" << entities[i]->returnType() << std::endl;
-                file_write << "NAME=N/A" << std::endl;
+                file_write << "NAME=" << entities[i]->returnName() << std::endl;
                 file_write << "TAG=" << entities[i]->returnTag() << std::endl;
                 
-                file_write << "SHADERID=3" << std::endl;
-                file_write << "MODELID=" << entities[i]->returnModel()->id << std::endl;
+                file_write << "SHADERID=" << entities[i]->returnShader()->assetShaderId << std::endl;
+                file_write << "SHADERBOUNDINGBOXID=0" << std::endl;
+                file_write << "MODELID=" << entities[i]->returnModel()->assetModelID << std::endl;
 
                 file_write << "POSITIONX=" << entities[i]->returnPosition().x << std::endl;
                 file_write << "POSITIONY=" << entities[i]->returnPosition().y << std::endl;
@@ -59,11 +60,11 @@ void SceneSave::save(std::vector<Entity*> entities)
             if(entities[i]->returnType() == "geometry")
             {
                 file_write << "TYPE=" << entities[i]->returnType() << std::endl;
-                file_write << "NAME=N/A" << std::endl;
+                file_write << "NAME=" << entities[i]->returnName() << std::endl;
                 file_write << "TAG=" << entities[i]->returnTag() << std::endl;
 
-                file_write << "SHADERID=2" << std::endl;
-
+                file_write << "SHADERID=" << entities[i]->returnShader()->assetShaderId << std::endl;
+                file_write << "SHADERBOUNDINGBOXID=0" << std::endl;
                 file_write << "GEOMETRYTYPE=" << entities[i]->returnGeometry()->returnGeometryType() << std::endl;
                 file_write << "GEOMETRYCOLORRED=" << entities[i]->returnColor().x << std::endl;
                 file_write << "GEOMETRYCOLORGREEN=" << entities[i]->returnColor().y << std::endl;
@@ -90,19 +91,13 @@ void SceneSave::save(std::vector<Entity*> entities)
             if(entities[i]->returnType() == "overlay")
             {
                 file_write << "TYPE=" << entities[i]->returnType() << std::endl;
-                file_write << "NAME=N/A" << std::endl;
+                file_write << "NAME=" << entities[i]->returnName() << std::endl;
                 file_write << "TAG=" << entities[i]->returnName() << std::endl;
-
-                file_write << "OVERLAYTYPE=model" << std::endl;
-
-                file_write << "VERTEXPATH=./project/assets/shaders/"  << std::endl;
-                file_write << "VERTEXFILENAME=" << entities[i]->returnShader()->vertex_path << std::endl;
-                file_write << "FRAGMENTPATH=./project/assets/shaders/" << std::endl;
-                file_write << "FRAGMENTFILENAME=" << entities[i]->returnShader()->fragment_path << std::endl;
-
-                file_write << "MODELPATH=./project/assets/models/" << std::endl;
-                file_write << "MODELFILENAME=" << entities[i]->returnModel()->returnModelPath() << std::endl;
-
+                
+                file_write << "SHADERID=" << entities[i]->returnShader()->assetShaderId << std::endl;
+                file_write << "SHADERBOUNDINGBOXID=0" << std::endl;
+                file_write << "MODELID=" << entities[i]->returnModel()->assetModelID << std::endl;
+                
                 file_write << "POSITIONX=" << entities[i]->returnPosition().x << std::endl;
                 file_write << "POSITIONY=" << entities[i]->returnPosition().y << std::endl;
                 file_write << "POSITIONZ=" << entities[i]->returnPosition().z << std::endl;

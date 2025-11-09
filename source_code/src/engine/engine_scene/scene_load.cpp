@@ -42,6 +42,7 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
         std::string pathFragmentShader = "";
 
         int shader_id = 0;
+        int shader_boundingBox_id = -1;
         int model_id = 0;
         int sprite_id = 0;
 
@@ -99,6 +100,8 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
                 {
                     if(key=="SHADERID")
                         shader_id = std::stoi(value);
+                    if(key=="SHADERBOUNDINGBOXID")
+                        shader_boundingBox_id = std::stoi(value);
                     if(key=="MODELID")
                         model_id = std::stoi(value);
 
@@ -167,6 +170,8 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
                 {
                     if(key=="SHADERID")
                         shader_id = std::stoi(value);
+                    if(key=="SHADERBOUNDINGBOXID")
+                        shader_boundingBox_id = std::stoi(value);
                     if(key=="MODELID")
                         model_id = std::stoi(value);
 
@@ -213,6 +218,8 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
 
                     if(key=="SHADERID")
                         shader_id = std::stoi(value);
+                    if(key=="SHADERBOUNDINGBOXID")
+                        shader_boundingBox_id = std::stoi(value);
                     if(key=="MODELID")
                         model_id = std::stoi(value);
 
@@ -267,9 +274,18 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
                     tempEntity->setShader(loaded_shaders[subIndex]);
             }
 
+            if(shader_boundingBox_id != -1)
+            {
+                for(int subIndex=0; subIndex<loaded_shaders.size(); subIndex++)
+                {
+                    if(shader_boundingBox_id == loaded_shaders[subIndex]->assetShaderId)
+                        tempEntity->setShaderBoundingBox(loaded_shaders[subIndex]);
+                }
+            }
+
             for(int subIndex=0; subIndex<loaded_models.size(); subIndex++)
             {
-                if(model_id == loaded_models[subIndex]->id)
+                if(model_id == loaded_models[subIndex]->assetModelID)
                     tempEntity->setModel(loaded_models[subIndex]);
 
             }
@@ -326,13 +342,21 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
                     tempEntity->setShader(loaded_shaders[subIndex]);
             }
 
+            if(shader_boundingBox_id != -1)
+            {
+                for(int subIndex=0; subIndex<loaded_shaders.size(); subIndex++)
+                {
+                    if(shader_boundingBox_id == loaded_shaders[subIndex]->assetShaderId)
+                        tempEntity->setShaderBoundingBox(loaded_shaders[subIndex]);
+                }
+            }
+
             for(int subIndex=0; subIndex<loaded_models.size(); subIndex++)
             {
-                if(model_id == loaded_models[subIndex]->id)
+                if(model_id == loaded_models[subIndex]->assetModelID)
                     tempEntity->setModel(loaded_models[subIndex]);
 
             }
-
             tempEntity->setName(name);
             tempEntity->setTag(tag);
             tempEntity->setType(type);
@@ -352,6 +376,15 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
                     tempEntity->setShader(loaded_shaders[subIndex]);
             }
 
+            if(shader_boundingBox_id != -1)
+            {
+                for(int subIndex=0; subIndex<loaded_shaders.size(); subIndex++)
+                {
+                    if(shader_boundingBox_id == loaded_shaders[subIndex]->assetShaderId)
+                        tempEntity->setShaderBoundingBox(loaded_shaders[subIndex]);
+                }
+            }
+            
             tempEntity->setGeometry(loaded_geometry[0]);
             tempEntity->setName(name);
             tempEntity->setTag(tag);
@@ -365,8 +398,6 @@ std::vector<Entity*> SceneLoad::generateEntities(std::vector<std::vector<std::st
             tempEntity->setColor( glm::vec3( colorRed, colorGreen, colorBlue) );
             entities.push_back(tempEntity);
         }
-
     }
-
     return entities;
 };

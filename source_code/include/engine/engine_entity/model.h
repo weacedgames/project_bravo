@@ -48,7 +48,7 @@ private:
     float z_max;
 
 public:
-    int id;
+    int assetModelID;
     Model(std::string const &path, int setId);
 
     void create_boundingBox();

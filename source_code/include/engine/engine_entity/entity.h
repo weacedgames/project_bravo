@@ -19,6 +19,7 @@ class Entity
 private:
     Camera* entity_camera;
     Shader* entity_shader;
+    Shader* entity_shader_boundingBox;
     Model* entity_model;
     Sprite* entity_sprite;
     Geometry* entity_geometry;
@@ -41,6 +42,7 @@ private:
 public:
     void setCamera(Camera* handleCamera);
     void setShader(Shader* handleShader);
+    void setShaderBoundingBox(Shader* handleShaderBB);
     void setModel(Model* handleModel);
     void setSprite(Sprite* handleSprite);
     void setGeometry(Geometry* handleGeometry);
@@ -62,6 +64,7 @@ public:
 public:
     Camera* returnCamera();
     Shader* returnShader();
+    Shader* returnShaderBoundingBox();
     Model* returnModel();
     Sprite* returnSprite();
     Geometry* returnGeometry();

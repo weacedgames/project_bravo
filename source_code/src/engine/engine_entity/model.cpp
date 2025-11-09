@@ -4,7 +4,7 @@ Model::Model(std::string const &path, int setId)
 {
 
     modelPath = path;
-    id = setId;
+    assetModelID = setId;
     loadModel(path);
 
     create_boundingBox();
