@@ -964,13 +964,32 @@
             "id":34,
             "title":"Make a Audio class",
             "description":"Make a Audio class",
-            "completed":false,
+            "completed":true,
             "username_created_by":"stonedufodude",
-            "username_completed_by":"",
+            "username_completed_by":"stonedufodude",
             "date_created":"10/11/2025",
-            "date_completed":"",
+            "date_completed":"11/19/2025",
             "tags":["programming","c++","error_handeling","file_loading"],
-            "comments":[]
+            "comments":[
+                {
+                    "username":"stonedufodude",
+                    "comment":"Sample Rate issue, will need to figure it out. Best guess will need to convert sample rate of incomming file",
+                    "tags":["issue"],
+                    "url":"",
+                    "file_path":"",
+                    "file_name":"",
+                    "date_created":"11/19/2025"
+                },
+                {
+                    "username":"stonedufodude",
+                    "comment":"Will need to convert files to 32 bit for mixing and then convert to 16 bit for audio output",
+                    "tags":[],
+                    "url":"",
+                    "file_path":"",
+                    "file_name":"",
+                    "date_created":"11/19/2025"
+                }
+            ]
         },
         {
             "id":35,
