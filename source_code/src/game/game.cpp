@@ -1,3 +1,4 @@
+
 #include "game.h"
 
 
@@ -28,9 +29,31 @@ void Game::initiate()
     std::vector<std::vector<std::string>> files = sceneLoad.loadEntities();
     loaded_entities = sceneLoad.generateEntities(files, loaded_shaders, loaded_models, loaded_sprites, loaded_geometry, &camera);
 
-    SceneSave sceneSave;
+    
+    AudioFile audioFile("./scene/assets/audio/stonemans_melody_rave.wav", 0);
 
-    sceneSave.save(loaded_entities);
+    std::cout << audioFile.audioWavInfo.sampleRate << std::endl;
+
+    std::thread playAudio([audioFile]
+    {
+        CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+        Audio audio;
+        audio.play(audioFile.audioData);
+        CoUninitialize();
+    });
+
+    // PS I dont like thread here, its not games job to manage that shit,
+    // Audio class you lazy ass you need to manage that BS, not game 
+    // DO your job!!!!!!
+    // To be continued..................................
+
+
+
+
+    
+    playAudio.detach();
+
+    
 };
 
 Game::~Game()
@@ -47,6 +70,7 @@ void Game::play()
 
 void Game::mainloop()
 {
+ 
     while (!glfwWindowShouldClose(graphics.window))
     {
         ///////////////////////////////////////
@@ -105,7 +129,6 @@ void Game::processInputKeyboard(GLFWwindow *window, Entity *entity)
         entity->setPosition(glm::vec3( entity->returnPosition().x, entity->returnPosition().y - climbSpeed , entity->returnPosition().z));
     if (keyboard.inputKeyboard() == 101)
         glfwSetWindowShouldClose(window, true);
-
 };
 
 void Game::processInputMouse()

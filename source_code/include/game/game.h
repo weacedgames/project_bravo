@@ -8,6 +8,7 @@
 #include <vector>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <thread>
 
 #include <Windows.h>
 #include <mmsystem.h>
@@ -28,6 +29,8 @@
 #include "mouse.h"
 #include "raycast.h"
 #include "config_load.h"
+#include "audio.h"
+#include "audio_file.h"
 
 #include "sprite.h"
 
