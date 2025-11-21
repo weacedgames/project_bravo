@@ -14,6 +14,17 @@
 
 #pragma comment(lib, "winmm.lib")
 
+// A voice in audio game is like a channel, one snippet of audio wav is a single voice
+// You can goto Halo 2 and 3 Documentaries and hear the auido engineer mention how to audio engine works with voices 
+// Bottom line we are creating a struct fot that voice
+
+struct Voice
+{
+    std::vector<float> audioData;
+    bool active = false;
+    size_t cursor = 0;
+    float strength = 1.0f;
+};
 
 class Audio
 {
@@ -26,8 +37,15 @@ public:
     UINT32 bufferFrameCount = 0;
 
 public:
-    Audio()
+
+    Voice voice_1;
+    Voice voice_2;
+
+    Audio(std::vector<float> channel_1_audioData, std::vector<float> channel_2_audioData)
     {
+        voice_1.audioData = channel_1_audioData;
+        voice_2.audioData = channel_2_audioData;
+
         initialize();
     };
 
@@ -120,76 +138,6 @@ public:
         return hr;
     };
 
-    void audio_render_16bit(std::vector<float> audioData)
-    {
-        size_t totalFrames = audioData.size() / m_pwfx->nChannels;
-        size_t currentFrame = 0;
-
-        m_pAudioClient->Start();
-
-
-        while(currentFrame < totalFrames)
-        {
-            UINT32 padding = 0;
-            m_pAudioClient->GetCurrentPadding(&padding);
-
-            UINT32 framesAvailable = bufferFrameCount - padding;
-
-            if(framesAvailable == 0)
-            {
-                Sleep(1);
-                continue;
-            }
-
-            UINT32 framesToWrite = (UINT32)std::min<size_t>(framesAvailable, totalFrames - currentFrame);
-
-            int16_t* pData = nullptr;
-
-            HRESULT hr = S_OK;
-            hr = m_pRenderClient->GetBuffer(framesToWrite, (BYTE**)&pData);
-
-            if(FAILED(hr)) break;
-
-            for(UINT32 i=0; i<framesToWrite*m_pwfx->nChannels; i++)
-            {
-                    float f = audioData[(currentFrame * m_pwfx->nChannels) + i];
-                    if(f > 1.0f) f = 1.0f;
-                    if(f < -1.0f) f = -1.0f;
-
-                    pData[i] = static_cast<int16_t>(f * 32767.0f);
-            }
-
-            m_pRenderClient->ReleaseBuffer(framesToWrite, 0);
-            currentFrame += framesToWrite;
-        }
-
-        Sleep(200);
-        m_pAudioClient->Stop();
-    };
-
-    std::vector<float> audio_mixer_16bit( std::vector<float> channel_1, float channel_1_strength, std::vector<float> channel_2, float channel_2_strength)
-    {
-        std::vector<float> audioData;
-        if(channel_1.size() > channel_2.size())
-            audioData.resize(channel_1.size());
-        else
-            audioData.resize(channel_2.size());
-    
-        for(size_t i=0; i<audioData.size(); i++)
-        {
-            if( i < channel_1.size() && i < channel_2.size())
-                audioData[i] = (channel_1[i] * channel_1_strength) + (channel_2[i] * channel_2_strength);
-
-            if( i > channel_1.size())
-                audioData[i] = 0 + (channel_2[i] * channel_2_strength);
-    
-            if( i > channel_2.size())
-                audioData[i] = (channel_1[i] * channel_1_strength) + 0;
-        }
-
-        return audioData;
-    };
-    
     void play(std::vector<float> audioData)
     {
         size_t totalFrames = audioData.size() / m_pwfx->nChannels;
@@ -232,13 +180,53 @@ public:
             m_pRenderClient->ReleaseBuffer(framesToWrite, 0);
             currentFrame += framesToWrite;
 
-            if(currentFrame > totalFrames-1)
-                currentFrame = 0;
+            if(currentFrame > totalFrames-1) currentFrame = 0;
         }
 
         Sleep(200);
         m_pAudioClient->Stop();
     };
+
+
+    void start()
+    {
+        m_pAudioClient->Start();
+        while(true)
+        {
+            UINT32 padding = 0;
+            m_pAudioClient->GetCurrentPadding(&padding);
+            UINT32 framesAvailable = bufferFrameCount - padding;
+
+            int16_t* pData = nullptr;
+            m_pRenderClient->GetBuffer(framesAvailable, (BYTE**)&pData);
+
+            for(UINT32 i=0; i<framesAvailable*m_pwfx->nChannels; i++)
+            {
+                float sample_channel_1 = voice_1.audioData[(voice_1.cursor * m_pwfx->nChannels) + i  ];
+                if( voice_1.cursor>=voice_1.audioData.size()) voice_1.cursor = 0;
+                
+                float sample_channel_2 = voice_2.audioData[(voice_2.cursor * m_pwfx->nChannels) + i  ];
+                if( voice_2.cursor>=voice_2.audioData.size()) voice_2.cursor = 0;
+                
+                float mixedSample = (sample_channel_1*voice_1.strength) +  (sample_channel_2*voice_2.strength);
+                if(mixedSample > 1.0f) mixedSample = 1.0f;
+                if(mixedSample < -1.0f) mixedSample = -1.0f;
+
+                pData[i] = static_cast<int16_t>(mixedSample * 32767.0f);
+            }
+
+            voice_1.cursor += framesAvailable;
+            voice_2.cursor += framesAvailable;
+
+            m_pRenderClient->ReleaseBuffer(framesAvailable, 0);
+            
+            Sleep(10);
+        }
+
+        Sleep(200);
+        m_pAudioClient->Stop();
+    };
+
 
 };
 

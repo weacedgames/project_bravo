@@ -28,6 +28,8 @@ source_code
 |                                |
 |                                |
 |                                |------> Audio --- Note: Audio Pipeline
+|                                |------> Audio File --- Note: Read Audio File and output 16bit vector<float>
+|                                |
 |                                |------> Entity --- Note: Everything in the engine is consider a entity
 |                                |          |
 |                                |          |
@@ -90,6 +92,8 @@ source_code
                                  |
                                  |
                                  |------> Audio --- Note: Audio Pipeline
+                                 |------> Audio File --- Note: Read Audio File and output 16bit vector<float>
+                                 |
                                  |------> Entity --- Note: Everything in the engine is consider a entity
                                  |          |
                                  |          |
@@ -97,6 +101,7 @@ source_code
                                  |          |------> Camera
                                  |          |------> Geometry
                                  |          |------> Model
+                                 |          |------> Sprite
                                  |          
                                  |------> Graphics --- Note: Handle rendering pipeline for OpenGL
                                  |          |
