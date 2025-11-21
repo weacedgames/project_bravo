@@ -15,6 +15,7 @@ Game::Game(): graphics(WINDOW_WIDTH, WINDOW_HEIGHT, map_dimmensions), camera(WIN
     
 };
 
+
 void Game::initiate()
 {
     // Loading Assets
@@ -29,31 +30,19 @@ void Game::initiate()
     std::vector<std::vector<std::string>> files = sceneLoad.loadEntities();
     loaded_entities = sceneLoad.generateEntities(files, loaded_shaders, loaded_models, loaded_sprites, loaded_geometry, &camera);
 
-    
-    AudioFile audioFile("./scene/assets/audio/stonemans_melody_rave.wav", 0);
+    // Loading Audio    
+    AudioFile audioFile_1("./scene/assets/audio/stonemans_melody_rave.wav", 0);
+    AudioFile audioFile_2("./scene/assets/audio/stonemans_melody_8bit_exploration.wav",1);
+    AudioFile audioFile_3("./scene/assets/audio/sfx_laser.wav",2);
 
-    std::cout << audioFile.audioWavInfo.sampleRate << std::endl;
-
-    std::thread playAudio([audioFile]
+    std::thread playAudio([audioFile_1, audioFile_3]
     {
         CoInitializeEx(nullptr, COINIT_MULTITHREADED);
         Audio audio;
-        audio.play(audioFile.audioData);
+        audio.play(audioFile_1.audioData);
         CoUninitialize();
     });
-
-    // PS I dont like thread here, its not games job to manage that shit,
-    // Audio class you lazy ass you need to manage that BS, not game 
-    // DO your job!!!!!!
-    // To be continued..................................
-
-
-
-
-    
-    playAudio.detach();
-
-    
+    playAudio.detach();    
 };
 
 Game::~Game()
@@ -78,9 +67,8 @@ void Game::mainloop()
         ///////////////////////////////////////
 
         float currentFrameTime = glfwGetTime();
-        graphics.deltaTime = currentFrameTime - graphics.lastFrameTime;
+        graphics.deltaTime = currentFrameTime - graphics.lastFrameTime; 
         graphics.lastFrameTime = currentFrameTime;
-
 
         ///////////////////////////////////////
         // Input
