@@ -1025,18 +1025,28 @@
             "date_created":"10/11/2025",
             "date_completed":"",
             "tags":["programming","c++","camera"],
-            "comments":[]
+            "comments":[
+                {
+                    "username":"stonedufodude",
+                    "comment":"Coming back to this after I complete network. Network will highlight what will need to be strcutured when it comes to network.",
+                    "tags":[],
+                    "url":"",
+                    "file_path":"",
+                    "file_name":"",
+                    "date_created":"11/24/2025"
+                }
+            ]
 
         },
         {
             "id":38,
             "title":"Implement a Network Client",
             "description":"Implement a Network Client, so it can connect to server for multiplayer.",
-            "completed":false,
+            "completed":true,
             "username_created_by":"stonedufodude",
-            "username_completed_by":"",
+            "username_completed_by":"stonedufodude",
             "date_created":"10/11/2025",
-            "date_completed":"",
+            "date_completed":"11/25/2025",
             "tags":["programming","c++","error_handeling","file_loading"],
             "comments":[]
         },

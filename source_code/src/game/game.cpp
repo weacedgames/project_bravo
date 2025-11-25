@@ -32,17 +32,20 @@ void Game::initiate()
 
     // Loading Audio    
     AudioFile audioFile_1("./scene/assets/audio/stonemans_melody_rave.wav", 0);
-    AudioFile audioFile_2("./scene/assets/audio/stonemans_melody_8bit_exploration.wav",1);
-    AudioFile audioFile_3("./scene/assets/audio/sfx_laser.wav",2);
+    AudioFile audioFile_2("./scene/assets/audio/stonemans_melody_8bit_exploration.wav", 1);
+    AudioFile audioFile_3("./scene/assets/audio/sfx_laser.wav", 2);
 
     std::thread playAudio([audioFile_1, audioFile_2]
     {
         CoInitializeEx(nullptr, COINIT_MULTITHREADED);
         Audio audio(audioFile_1.audioData, audioFile_2.audioData);
         
-        audio.start();
+        audio.play(audioFile_1.audioData);
+
+        //audio.start();
         CoUninitialize();
     });
+
     playAudio.detach();    
 };
 
@@ -60,7 +63,8 @@ void Game::play()
 
 void Game::mainloop()
 {
- 
+    NetworkServer networkServer;
+
     while (!glfwWindowShouldClose(graphics.window))
     {
         ///////////////////////////////////////
@@ -95,6 +99,9 @@ void Game::mainloop()
         // Render
         ///////////////////////////////////////
         graphics.render(loaded_entities, projection, view);
+
+
+
     }
 };
 
@@ -151,8 +158,6 @@ void Game::processInputMouse()
     //                   /  \
     //          
     
-
-
 
     if(Mouse::cursor_active)
     {

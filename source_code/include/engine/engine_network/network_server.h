@@ -1,6 +1,7 @@
 #ifndef NETWORK_SERVER_H
 #define NETWORK_SERVER_H
 
+#include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>

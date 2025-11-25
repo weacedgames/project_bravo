@@ -25,6 +25,7 @@
 #include "scene_save.h"
 #include "scene_load.h"
 #include "network_server.h"
+#include "network_client.h"
 #include "keyboard.h"
 #include "mouse.h"
 #include "raycast.h"

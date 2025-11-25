@@ -76,24 +76,41 @@ void NetworkServer::run(SOCKET serverSocket)
         // Variable Names: packet_type,player_id,username,x,y,z
         //////////////////////////////////////////////////////////////
         std::getline(ss, packet_type, ',');
-
-        std::getline(ss, token, ',');
-        player_id = std::stoi(token);
-
         std::getline(ss, username, ',');
 
-        std::getline(ss, token, ',');
-        x = std::stof(token);
-
-        std::getline(ss, token, ',');
-        y = std::stof(token);
-
-        std::getline(ss, token, ',');
-        z = std::stof(token);
+//        std::getline(ss, token, ',');
+//        player_id = std::stoi(token);
+//
+//        std::getline(ss, token, ',');
+//        x = std::stof(token);
+//
+//        std::getline(ss, token, ',');
+//        y = std::stof(token);
+//
+//        std::getline(ss, token, ',');
+//        z = std::stof(token);
         //////////////////////////////////////////////////////////////
 
         if(packet_type=="quit"){break;}
-        if(packet_type=="move"){updatePlayerPosition( player_id, glm::vec3(x,y,z)); }
+        if(packet_type=="move")
+        {
+            std::cout << "CLIENT::" << username << "::MOVED::SHIT" << std::endl;
+            //updatePlayerPosition( player_id, glm::vec3(x,y,z)); 
+        }
+
+        
+        // Gonna Have to rip out the majority of this crap out
+        // It worked for a temp run, but to make it into something useable is another matter on its own
+        // Still going to use sending position until I figure sending actions only
+        // The server will be responsible for game logic
+        // I think this wraps up task 38, create a client
+        // I think 39 is update the server
+        // Task 40 I will be making the 2 work together, I will also need to redesign map,
+        // My solution is players are in the game like a spawn point, but are not render till a player join and takes over character
+        // For example there will 4x players, 2x on each team
+        // Starting spawn will represent where players position starts
+        // In theory XD I honestly have no idea if this shit is going to work XD
+        
     }
 
     closesocket(clientSocket);
