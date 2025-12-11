@@ -11,7 +11,7 @@ void SceneSave::save(std::vector<Entity*> entities)
             filename = "object_" + std::to_string(i) + ".entity";
         else
             filename = "object_" + std::to_string(i) + "_" + entities[i]->returnName() + ".entity";
-            
+
         std::ofstream file_write(path + filename);
 
         if(file_write.is_open())

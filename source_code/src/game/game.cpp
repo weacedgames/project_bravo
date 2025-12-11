@@ -1,4 +1,3 @@
-
 #include "game.h"
 
 
@@ -13,6 +12,31 @@ Game::Game(): graphics(WINDOW_WIDTH, WINDOW_HEIGHT, map_dimmensions), camera(WIN
         initiate();
     }
     
+
+    // Hello, Task 39
+
+    //
+    //
+    //
+    //                                Game
+    //                                 /\
+    //                                /  \
+    //                               /    \
+    //                              /      \
+    //                             /        \
+    //                            /          \
+    //                           /            \
+    //                          /              \
+    //                         /                \
+    //                        /      Engine      \
+    //                       /                    \
+    //                      /                      \
+    //                     /                        \
+    //                    /__________________________\
+    //    WxWidgets Editor                            Network 
+ 
+
+
 };
 
 
@@ -35,18 +59,18 @@ void Game::initiate()
     AudioFile audioFile_2("./scene/assets/audio/stonemans_melody_8bit_exploration.wav", 1);
     AudioFile audioFile_3("./scene/assets/audio/sfx_laser.wav", 2);
 
-    std::thread playAudio([audioFile_1, audioFile_2]
-    {
-        CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-        Audio audio(audioFile_1.audioData, audioFile_2.audioData);
-        
-        audio.play(audioFile_1.audioData);
+//    std::thread playAudio([audioFile_1, audioFile_2]
+//    {
+//        CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+//        Audio audio(audioFile_1.audioData, audioFile_2.audioData);
+//        
+//        audio.play(audioFile_1.audioData);
+//
+//        //audio.start();
+//        CoUninitialize();
+//    });
+//    playAudio.detach();    
 
-        //audio.start();
-        CoUninitialize();
-    });
-
-    playAudio.detach();    
 };
 
 Game::~Game()
@@ -63,7 +87,28 @@ void Game::play()
 
 void Game::mainloop()
 {
-    NetworkServer networkServer;
+
+    ///////////////////////////////////////////////////////
+    // Gameplan
+    //////////////////////////////////////////////////////
+    //  
+    //  
+    //  Player 1 (Server)
+    //  Player 2 (Client)
+    //  
+    //  
+    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
+
+    int selectPlayer = 1;
+
+    NetworkServer* networkServer = nullptr;
+    NetworkClient networkClient(selectPlayer);
+
+    if(selectPlayer==1)
+    {
+        networkServer = new NetworkServer;
+    }
 
     while (!glfwWindowShouldClose(graphics.window))
     {
@@ -79,8 +124,53 @@ void Game::mainloop()
         // Input
         ///////////////////////////////////////
 
-        processInputKeyboard(graphics.window, loaded_entities[0]);
-        processInputMouse();
+        if(selectPlayer == 1)
+        {
+            if (keyboard.inputKeyboard() == 130) // W
+                networkClient.player_1_action = 1;
+            if (keyboard.inputKeyboard() == 144) // S
+                networkClient.player_1_action = 2;
+            if (keyboard.inputKeyboard() == 143) // A
+                networkClient.player_1_action = 3;
+            if (keyboard.inputKeyboard() == 145) // D
+                networkClient.player_1_action = 4;
+
+            if (keyboard.inputKeyboard() == 169) // Space
+                networkClient.player_1_action = 5;
+            if (keyboard.inputKeyboard() == 167) // Alt
+                networkClient.player_1_action = 6;
+
+            loaded_entities[0]->setPosition(networkClient.player_1_cameraPosition);
+            loaded_entities[1]->setPosition(networkClient.player_2_cameraPosition);
+        }
+
+        if(selectPlayer == 2)
+        {
+            if (keyboard.inputKeyboard() == 130) // W
+                networkClient.player_2_action = 1;
+            if (keyboard.inputKeyboard() == 144) // S
+                networkClient.player_2_action = 2;
+            if (keyboard.inputKeyboard() == 143) // A
+                networkClient.player_2_action = 3;
+            if (keyboard.inputKeyboard() == 145) // D
+                networkClient.player_2_action = 4;
+
+            if (keyboard.inputKeyboard() == 169) // Space
+                networkClient.player_2_action = 5;
+            if (keyboard.inputKeyboard() == 167) // Alt
+                networkClient.player_2_action = 6;
+
+            loaded_entities[0]->setPosition(networkClient.player_2_cameraPosition);
+            loaded_entities[1]->setPosition(networkClient.player_1_cameraPosition);
+        }
+
+        // Fuck it only way to find out if this shit is working properly
+        // Ima copy this project and set the other to player 2
+        // This camera should move normally but the character should move if the other screen 
+        // moves at the same time it camera should move to
+
+        //processInputKeyboard(graphics.window, loaded_entities[0]);
+        //processInputMouse();
         
         ///////////////////////////////////////
         // Camera
@@ -99,10 +189,9 @@ void Game::mainloop()
         // Render
         ///////////////////////////////////////
         graphics.render(loaded_entities, projection, view);
-
-
-
     }
+
+    delete networkServer;
 };
 
 
