@@ -994,7 +994,7 @@
         {
             "id":35,
             "title":"Audio Loop Background Music",
-            "description":"Audio Loop Background Music",
+            "description":"Audio Loop Background Music in WASAPI",
             "completed":true,
             "username_created_by":"stonedufodude",
             "username_completed_by":"stonedufodude",
@@ -1006,7 +1006,7 @@
         {
             "id":36,
             "title":"Audio Play 2x Sounds at Once",
-            "description":"Audio Play 2x Sounds at Once",
+            "description":"Create an 2 Channel Mixer, Playing 2x Audio Sounds at once. Using WASAPI",
             "completed":true,
             "username_created_by":"stonedufodude",
             "username_completed_by":"atonedufodude",
@@ -1053,7 +1053,7 @@
         {
             "id":39,
             "title":"Improve Network Server",
-            "description":"Needs major improvement",
+            "description":"Needs major improvement XD",
             "completed":false,
             "username_created_by":"stonedufodude",
             "username_completed_by":"",
@@ -1065,7 +1065,7 @@
         {
             "id":40,
             "title":"Multiplayer",
-            "description":"Add multiplayer, seting up a client and server system to support 4 players",
+            "description":"Add multiplayer, setting up a Server Authoritative System to support 2v2 players in LAN and WAN",
             "completed":false,
             "username_created_by":"stonedufodude",
             "username_completed_by":"",

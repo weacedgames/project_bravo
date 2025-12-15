@@ -1,21 +1,23 @@
-#ifndef NETWORK_SERVER_H
-#define NETWORK_SERVER_H
+#ifndef NETWORK_TCP_SERVER_H
+#define NETWORK_TCP_SERVER_H
 
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <windows.h>
-#include <winsock.h>
 #include <string>
 #include <sstream>
 #include <thread>
 #include <vector>
 
+#include <winsock2.h>
+#include <Ws2tcpip.h>
+#include <windows.h>
+
 #pragma comment(lib,"ws2_32.lib")
 
 
-class NetworkServer
+class NetworkServerTCP
 {
 public:
     SOCKET serverReceiverSocket;
@@ -41,12 +43,8 @@ public:
     //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    NetworkServer()
+    NetworkServerTCP()
     {
-        //////////////////////////////////////
-        // PHASE 1 Start 8080 Server
-        //////////////////////////////////////
-    
         WSADATA wsaData;
         if(WSAStartup(MAKEWORD(2,2),&wsaData)!=0)
         {
@@ -82,13 +80,11 @@ public:
 
         std::cout << "SERVER_RECEIVER::SERVER_STARTED" << std::endl;
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-        std::thread thread_reciever(&NetworkServer::clientHandle_receiver, this);
+        std::thread thread_reciever(&NetworkServerTCP::serverMainLoop, this);
         thread_reciever.detach();
     };
 
-    ~NetworkServer()
+    ~NetworkServerTCP()
     {
         closesocket(serverReceiverSocket);
         WSACleanup();
@@ -96,33 +92,32 @@ public:
     };
 
     //////////////////////////////////////
+    // PHASE 1 Start 8080 Server
+    //////////////////////////////////////
+    void serverMainLoop()
+    {   
+        while(true)
+        {
+            sockaddr_in clientSenderAddress;
+            int clientSenderSize = sizeof(clientSenderAddress);
+
+            SOCKET clientSenderSocket = accept( serverReceiverSocket, (sockaddr*)&clientSenderAddress, &clientSenderSize);
+            std::cout << "SERVER_RECEIVER::CLIENT_SENDER_CONNECTED\n" << std::endl;
+
+            std::thread thread_reciever(&NetworkServerTCP::clientHandle_receiver, this, clientSenderSocket, clientSenderAddress);
+            thread_reciever.detach();
+        }
+    };
+
+    //////////////////////////////////////
     // PHASE 4 Receiving 8080
     //////////////////////////////////////
-    void clientHandle_receiver()
+    void clientHandle_receiver(SOCKET clientSenderSocket, sockaddr_in clientSenderAddress)
     {
         // ######################################################################################
         // Start Client Handle
         // ######################################################################################
         
-        // Shit this needs to be inside a loop, think of it as this everytime
-        // a client connects starts the loop and then the serve main loop
-        // continues on waiting for next connection
-
-        // which you see below its only design to accept one connection
-
-        ////////////////////////////////////////////////////////////////////////
-        // THIS WILL BE SERVER MAIN LOOP
-        ////////////////////////////////////////////////////////////////////////
-
-        sockaddr_in clientSenderAddress;
-        int clientSenderSize = sizeof(clientSenderAddress);
-        SOCKET clientSenderSocket = accept( serverReceiverSocket, (sockaddr*)&clientSenderAddress, &clientSenderSize);
-        std::cout << "SERVER_RECEIVER::CLIENT_SENDER_CONNECTED" << std::endl;
-
-        ///////////////////////////////////////////////////////////
-        // THIS WILL BE A THREAD, WILL NEED clientSenderSocket
-        ///////////////////////////////////////////////////////////
-
         char initiateBuffer[1024] = {};
         recv( clientSenderSocket, initiateBuffer, sizeof(initiateBuffer), 0);
         
@@ -135,8 +130,7 @@ public:
         std::getline(ss, setPlayer, ',');
         std::getline(ss, setPlayer_action, ',');
 
-
-        std::thread thread_sender(&NetworkServer::clientHandle_sender, this, std::stoi(setPlayer));
+        std::thread thread_sender(&NetworkServerTCP::clientHandle_sender, this, std::stoi(setPlayer), clientSenderAddress);
         thread_sender.detach();
 
         while(true)
@@ -166,7 +160,7 @@ public:
             // 2. Reading Message
             std::stringstream ss(data);
             
-            std::string player = setPlayer;
+            std::string player = "0";
             std::string player_action = "0";
 
             std::getline(ss, player, ',');
@@ -175,45 +169,33 @@ public:
             // 3. Executing Message
             if(player=="1")
             {
-                if(player_action=="-1"){break;}
-                if(player_action=="1"){player_1_cameraPosition += glm::vec3( 0.0f , 0.0f,-0.0005f);} // W
-                if(player_action=="2"){player_1_cameraPosition += glm::vec3( 0.0f , 0.0f, 0.0005f);} // S
-                if(player_action=="3"){player_1_cameraPosition += glm::vec3(-0.0005f, 0.0f, 0.0f);} // A
-                if(player_action=="4"){player_1_cameraPosition += glm::vec3( 0.0005f, 0.0f, 0.0f);} // D
-                if(player_action=="5"){player_1_cameraPosition += glm::vec3( 0.0f, 0.0005f, 0.0f);} // A
-                if(player_action=="6"){player_1_cameraPosition += glm::vec3( 0.0f,-0.0005f, 0.0f);} // D
+                if(player_action=="1"){player_1_cameraPosition += glm::vec3( 0.0f , 0.0f,-0.00005f);} // W
+                if(player_action=="2"){player_1_cameraPosition += glm::vec3( 0.0f , 0.0f, 0.00005f);} // S
+                if(player_action=="3"){player_1_cameraPosition += glm::vec3(-0.00005f, 0.0f, 0.0f);} // A
+                if(player_action=="4"){player_1_cameraPosition += glm::vec3( 0.00005f, 0.0f, 0.0f);} // D
+                if(player_action=="5"){player_1_cameraPosition += glm::vec3( 0.0f, 0.00005f, 0.0f);} // A
+                if(player_action=="6"){player_1_cameraPosition += glm::vec3( 0.0f,-0.00005f, 0.0f);} // D
             }
 
             if(player=="2")
             {
-                if(player_action=="-1"){break;}
-                if(player_action=="1"){player_2_cameraPosition += glm::vec3( 0.0f , 0.0f,-0.0005f);} // W
-                if(player_action=="2"){player_2_cameraPosition += glm::vec3( 0.0f , 0.0f, 0.0005f);} // S
-                if(player_action=="3"){player_2_cameraPosition += glm::vec3(-0.0005f, 0.0f, 0.0f);} // A
-                if(player_action=="4"){player_2_cameraPosition += glm::vec3( 0.0005f, 0.0f, 0.0f);} // D
-                if(player_action=="5"){player_2_cameraPosition += glm::vec3( 0.0f, 0.0005f, 0.0f);} // A
-                if(player_action=="6"){player_2_cameraPosition += glm::vec3( 0.0f,-0.0005f, 0.0f);} // D
+                if(player_action=="1"){player_2_cameraPosition += glm::vec3( 0.0f , 0.0f,-0.00005f);} // W
+                if(player_action=="2"){player_2_cameraPosition += glm::vec3( 0.0f , 0.0f, 0.00005f);} // S
+                if(player_action=="3"){player_2_cameraPosition += glm::vec3(-0.00005f, 0.0f, 0.0f);} // A
+                if(player_action=="4"){player_2_cameraPosition += glm::vec3( 0.00005f, 0.0f, 0.0f);} // D
+                if(player_action=="5"){player_2_cameraPosition += glm::vec3( 0.0f, 0.00005f, 0.0f);} // A
+                if(player_action=="6"){player_2_cameraPosition += glm::vec3( 0.0f,-0.00005f, 0.0f);} // D
             }
-
-            //std::cout << "CLIENT_SENDER::RECIEVED::" << data << std::endl;
         }
 
         closesocket(clientSenderSocket);
         std::cout << "SERVER_RECEIVER::DISCONNECTED_FROM_CLIENT_SENDER" << std::endl;
-
-        ///////////////////////////////////////////////////////////
-        // THIS WILL BE A THREAD, WILL NEED clientSenderSocket
-        ///////////////////////////////////////////////////////////
-
-        ////////////////////////////////////////////////////////////////////////
-        // THIS WILL BE SERVER MAIN LOOP
-        ////////////////////////////////////////////////////////////////////////
-    };
+    }
 
     //////////////////////////////////////
     // PHASE 5 Connect to 8081 Server
     //////////////////////////////////////
-    void clientHandle_sender(int setPlayer)
+    void clientHandle_sender(int setPlayer, sockaddr_in clientSenderAddress)
     {
 
         SOCKET serverSenderSocket = socket(AF_INET,SOCK_STREAM,0);
@@ -225,7 +207,10 @@ public:
             return;
         }
 
-        const char* HOST_IP = "127.0.0.1";
+        char ipstr[INET_ADDRSTRLEN];
+        inet_ntop( AF_INET, &clientSenderAddress.sin_addr, ipstr, INET_ADDRSTRLEN );
+
+        const char* HOST_IP = ipstr;
 
         sockaddr_in clientReceiverAddress;
         clientReceiverAddress.sin_family = AF_INET;
@@ -233,24 +218,18 @@ public:
         clientReceiverAddress.sin_addr.s_addr = inet_addr(HOST_IP);
 
         connect(serverSenderSocket, (struct sockaddr*)&clientReceiverAddress, sizeof(clientReceiverAddress));
-        std::cout << "SERVER_SENDER::CONNECTED_TO_CLIENT_RECEIVER" << clientReceiverAddress.sin_addr.s_addr << std::endl;
+        std::cout << "SERVER_SENDER::CONNECTED_TO_CLIENT_RECEIVER::" << clientReceiverAddress.sin_addr.s_addr << "\n" <<  std::endl;
 
         int player = setPlayer;
-
+        
         while(true)
         {
             // Note: Server is going to send player position info, along with other players info for rendering
             std::string data;
 
-            if(player==1)
-            {
-                data = std::to_string(player_1_cameraPosition.x) + ',' + std::to_string(player_1_cameraPosition.y) + ',' + std::to_string(player_1_cameraPosition.z);
-            }
-            if(player==2)
-            {
-                data = std::to_string(player_2_cameraPosition.x) + ',' + std::to_string(player_2_cameraPosition.y) + ',' + std::to_string(player_2_cameraPosition.z);
-            }
-
+            data = std::to_string(player_1_cameraPosition.x) + ',' + std::to_string(player_1_cameraPosition.y) + ',' + std::to_string(player_1_cameraPosition.z) + ',' + 
+            std::to_string(player_2_cameraPosition.x) + ',' + std::to_string(player_2_cameraPosition.y) + ',' + std::to_string(player_2_cameraPosition.z);
+           
             const char* message = data.c_str();
 
             int result = send(serverSenderSocket, message, strlen(message), 0);
@@ -259,8 +238,6 @@ public:
                 std::cerr << "SERVER_SENDER::ERROR::SEND_FAILED" << std::endl;
                 break;
             }
-
-            //std::cout << "SERVER_SENDER::SENDING::" << message << std::endl;
 
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }

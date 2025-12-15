@@ -1,5 +1,5 @@
-#ifndef NETWORK_CLIENT_H
-#define NETWOKR_CLIENT_H
+#ifndef NETWORK_TCP_CLIENT_H
+#define NETWOKR_TCP_CLIENT_H
 
 #include <iostream>
 #include <windows.h>
@@ -16,11 +16,13 @@
 
 #pragma comment(lib,"ws2_32.lib")
 
-class NetworkClient
+class NetworkClientTCP
 {
 public:
     SOCKET clientReceiverSocket;
     sockaddr_in clientReceiverAddress;
+
+    const char* HOST_IP = "";
 
     int selectedPlayer = 0;
 
@@ -47,13 +49,23 @@ public:
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    NetworkClient(int setPlayer)
+    NetworkClientTCP(int setPlayer)
     {
         //////////////////////////////////////
         // PHASE 2 Start 8081 Server
         //////////////////////////////////////
         
         selectedPlayer = setPlayer;
+
+        if(selectedPlayer==1)
+        {
+            HOST_IP = "127.0.0.1";
+        }
+
+        if(selectedPlayer==2)
+        {
+            HOST_IP = "192.168.0.242";
+        }
 
         WSADATA wsaData;
 
@@ -91,19 +103,20 @@ public:
 
         std::cout << "CLIENT_RECEIVER::SERVER_STARTED" << std::endl;
 
+        std::cout << "---------------------------------------------------------------\n" << std::endl;
 
         ///////////////////////////////////////////////////////////////////////////
 
         // Phase 2
-        std::thread thread_receiver(&NetworkClient::serverHandle_receiver, this);
+        std::thread thread_receiver(&NetworkClientTCP::serverHandle_receiver, this);
         thread_receiver.detach();
 
         // Phase 3
-        std::thread thread_sender(&NetworkClient::serverHandle_sender, this);
+        std::thread thread_sender(&NetworkClientTCP::serverHandle_sender, this);
         thread_sender.detach();
     };
 
-    ~NetworkClient()
+    ~NetworkClientTCP()
     {
         closesocket(clientReceiverSocket);
         WSACleanup();
@@ -140,28 +153,27 @@ public:
 
             std::string data = buffer;
 
-            std::string xPos = "0"; 
-            std::string yPos = "0";
-            std::string zPos = "0"; 
+            std::string xPos_1 = "0"; 
+            std::string yPos_1 = "0";
+            std::string zPos_1 = "0";
+
+            std::string xPos_2 = "0"; 
+            std::string yPos_2 = "0";
+            std::string zPos_2 = "0"; 
 
             std::stringstream ss(data);
 
-            std::getline(ss, xPos, ',');
-            std::getline(ss, yPos, ',');
-            std::getline(ss, zPos, ',');
+            std::getline(ss, xPos_1, ',');
+            std::getline(ss, yPos_1, ',');
+            std::getline(ss, zPos_1, ',');
 
-            // 3. Executing Message
-            if(selectedPlayer == 1)
-            {
-                player_1_cameraPosition = glm::vec3( std::stof(xPos), std::stof(yPos), std::stof(zPos) );
-            }
+            std::getline(ss, xPos_2, ',');
+            std::getline(ss, yPos_2, ',');
+            std::getline(ss, zPos_2, ',');
 
-            if(selectedPlayer == 2)
-            {
-                player_2_cameraPosition = glm::vec3( std::stof(xPos), std::stof(yPos), std::stof(zPos) );
-            }
 
-            //std::cout << "SERVER_SENDER::RECIEVED::" << data << std::endl;
+            player_1_cameraPosition = glm::vec3( std::stof(xPos_1), std::stof(yPos_1), std::stof(zPos_1) );
+            player_2_cameraPosition = glm::vec3( std::stof(xPos_2), std::stof(yPos_2), std::stof(zPos_2) );
         }
         
         closesocket(serverSenderSocket);
@@ -181,17 +193,13 @@ public:
             std::cerr << "CLIENT_SENDER::ERROR::FAILED_TO_CREATE_SOCKET" << std::endl;
         }
 
-        const char* HOST_IP = "127.0.0.1";
-
         sockaddr_in serverReceiverAddress;
         serverReceiverAddress.sin_family = AF_INET;
         serverReceiverAddress.sin_port = htons(8080);
         serverReceiverAddress.sin_addr.s_addr = inet_addr(HOST_IP);
 
         connect(clientSenderSocket, (struct sockaddr*)&serverReceiverAddress, sizeof(serverReceiverAddress));
-        std::cout << "CLIENT_SENDER::CONNECTED_TO_SERVER_RECEIVER::" << serverReceiverAddress.sin_addr.s_addr << std::endl;
-
-        
+        std::cout << "CLIENT_SENDER::CONNECTED_TO_SERVER_RECEIVER::" << serverReceiverAddress.sin_addr.s_addr << "\n" << std::endl;
 
         while(true)
         {   
@@ -211,7 +219,6 @@ public:
             const char* message = action.c_str();
 
             send(clientSenderSocket, message, strlen(message), 0);
-            //std::cout << "CLIENT_SENDER::SENDING::" << message << std::endl;
         }
 
         closesocket(clientSenderSocket);

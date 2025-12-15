@@ -13,8 +13,6 @@ Game::Game(): graphics(WINDOW_WIDTH, WINDOW_HEIGHT, map_dimmensions), camera(WIN
     }
     
 
-    // Hello, Task 39
-
     //
     //
     //
@@ -34,7 +32,6 @@ Game::Game(): graphics(WINDOW_WIDTH, WINDOW_HEIGHT, map_dimmensions), camera(WIN
     //                     /                        \
     //                    /__________________________\
     //    WxWidgets Editor                            Network 
- 
 
 
 };
@@ -102,13 +99,14 @@ void Game::mainloop()
 
     int selectPlayer = 1;
 
-    NetworkServer* networkServer = nullptr;
-    NetworkClient networkClient(selectPlayer);
-
+    NetworkServerUDP* networkServer = nullptr;
+    
     if(selectPlayer==1)
     {
-        networkServer = new NetworkServer;
+        networkServer = new NetworkServerUDP;
     }
+
+    NetworkClientUDP networkClient(selectPlayer);
 
     while (!glfwWindowShouldClose(graphics.window))
     {
@@ -164,13 +162,8 @@ void Game::mainloop()
             loaded_entities[1]->setPosition(networkClient.player_1_cameraPosition);
         }
 
-        // Fuck it only way to find out if this shit is working properly
-        // Ima copy this project and set the other to player 2
-        // This camera should move normally but the character should move if the other screen 
-        // moves at the same time it camera should move to
-
         //processInputKeyboard(graphics.window, loaded_entities[0]);
-        //processInputMouse();
+        processInputMouse();
         
         ///////////////////////////////////////
         // Camera
