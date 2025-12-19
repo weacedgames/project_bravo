@@ -202,13 +202,16 @@ public:
 
             for(UINT32 i=0; i<framesAvailable*m_pwfx->nChannels; i++)
             {
-                float sample_channel_1 = voice_1.audioData[(voice_1.cursor * m_pwfx->nChannels) + i  ];
-                if( voice_1.cursor>=voice_1.audioData.size()) voice_1.cursor = 0;
+                float sample_channel_1;
+                if( (voice_1.cursor * m_pwfx->nChannels) + i<voice_1.audioData.size()-framesAvailable)sample_channel_1 = voice_1.audioData[(voice_1.cursor * m_pwfx->nChannels) + i  ];
+                else if( (voice_1.cursor * m_pwfx->nChannels) + i>=voice_1.audioData.size()) voice_1.cursor = 0;
                 
-                float sample_channel_2 = voice_2.audioData[(voice_2.cursor * m_pwfx->nChannels) + i  ];
-                if( voice_2.cursor>=voice_2.audioData.size()) voice_2.cursor = 0;
-                
+                float sample_channel_2;
+                if( (voice_2.cursor * m_pwfx->nChannels) + i<voice_2.audioData.size())sample_channel_2 = voice_2.audioData[(voice_2.cursor * m_pwfx->nChannels) + i  ];
+                else if( (voice_2.cursor * m_pwfx->nChannels) + i>=voice_2.audioData.size())voice_2.cursor = 0;
+
                 float mixedSample = (sample_channel_1*voice_1.strength) +  (sample_channel_2*voice_2.strength);
+
                 if(mixedSample > 1.0f) mixedSample = 1.0f;
                 if(mixedSample < -1.0f) mixedSample = -1.0f;
 

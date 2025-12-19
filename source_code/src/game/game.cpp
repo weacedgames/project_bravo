@@ -56,17 +56,15 @@ void Game::initiate()
     AudioFile audioFile_2("./scene/assets/audio/stonemans_melody_8bit_exploration.wav", 1);
     AudioFile audioFile_3("./scene/assets/audio/sfx_laser.wav", 2);
 
-//    std::thread playAudio([audioFile_1, audioFile_2]
-//    {
-//        CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-//        Audio audio(audioFile_1.audioData, audioFile_2.audioData);
-//        
-//        audio.play(audioFile_1.audioData);
-//
-//        //audio.start();
-//        CoUninitialize();
-//    });
-//    playAudio.detach();    
+    std::thread playAudio([audioFile_1, audioFile_2]
+    {
+        CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+        Audio audio(audioFile_1.audioData, audioFile_2.audioData);
+
+        audio.start();
+        CoUninitialize();
+    });
+    playAudio.detach();    
 
 };
 
