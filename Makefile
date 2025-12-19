@@ -21,54 +21,76 @@ EXTERNAL_DEPENDCIES = -I$(glfw_include) -I$(glad_include) -I$(stb_include) -I$(g
 ################################################################################################################################################################################################################################
 # Section 2: Declaring Header Files
 
+##### Engine Dependencies
+
 path_include_graphics = ./source_code/include/engine/engine_graphics
+path_include_audio = ./source_code/include/engine/engine_audio
 path_include_entity = ./source_code/include/engine/engine_entity
 path_include_project = ./source_code/include/engine/engine_scene
-path_include_network = ./source_code/include/engine/engine_network
 path_include_physics = ./source_code/include/engine/engine_physics
 path_include_user = ./source_code/include/engine/engine_user
 
-ENGINE_DEPENDCIES = -I$(path_include_graphics)/opengl -I$(path_include_entity) -I$(path_include_project) -I$(path_include_network) -I$(path_include_physics) -I$(path_include_user)
+ENGINE_DEPENDCIES = -I$(path_include_graphics)/opengl -I$(path_include_audio)/windows -I$(path_include_entity) -I$(path_include_project) -I$(path_include_physics) -I$(path_include_user)
 
+##### Game Dependencies
 
 path_include_game = ./source_code/include/game
+
 GAME_DEPENDCIES = -I$(path_include_game)
 
-LOCAL_DEPENDCIES = $(ENGINE_DEPENDCIES) $(GAME_DEPENDCIES)
+##### Network Dependencies
+
+path_include_network = ./source_code/include/network
+
+NETWORK_DEPENDCIES = -I$(path_include_network)
+
+##### Final Dependencies
+
+LOCAL_DEPENDCIES = $(ENGINE_DEPENDCIES) $(NETWORK_DEPENDCIES) $(GAME_DEPENDCIES) 
 
 ################################################################################################################################################################################################################################
 # Section 3: Declaring Source Files
 
+##### Engine Pathing
+
 path_src_graphics = ./source_code/src/engine/engine_graphics
 local_src_graphics_opengl = $(path_src_graphics)/opengl/graphics.cpp $(path_src_graphics)/opengl/shader.cpp $(path_src_graphics)/opengl/mesh.cpp 
 
+path_src_audio = ./source_code/src/engine/engine_audio
+local_src_audio = $(path_src_audio)/windows/audio.cpp $(path_src_audio)/windows/audio_file.cpp
 
 path_src_entity = ./source_code/src/engine/engine_entity
 local_src_entity_entity = $(path_src_entity)/entity.cpp $(path_src_entity)/model.cpp $(path_src_entity)/geometry.cpp $(path_src_entity)/camera.cpp $(path_src_entity)/sprite.cpp
 
-
 path_src_physics = ./source_code/src/engine/engine_physics
 local_src_physics =  $(path_src_physics)/rigid_body.cpp $(path_src_physics)/collider.cpp $(path_src_physics)/collision.cpp $(path_src_physics)/raycast.cpp
-
 
 path_src_engineScene = ./source_code/src/engine/engine_scene
 local_src_engineScene = $(path_src_engineScene)/scene_save.cpp $(path_src_engineScene)/scene_load.cpp $(path_src_engineScene)/config_load.cpp
 
-
-path_src_engineNetwork = ./source_code/src/engine/engine_network
-local_src_engineNetwork = $(path_src_engineNetwork)/network_server.cpp
-
 path_src_engineUser = ./source_code/src/engine/engine_user
 local_src_engineUser = $(path_src_engineUser)/keyboard.cpp $(path_src_engineUser)/mouse.cpp
 
-ENGINE_SOURCE = $(local_src_graphics_opengl) $(local_src_entity_entity) $(local_src_physics) $(local_src_engineScene) $(local_src_engineNetwork) $(local_src_engineUser)
+ENGINE_SOURCE = $(local_src_graphics_opengl) $(local_src_audio) $(local_src_entity_entity) $(local_src_physics) $(local_src_engineScene) $(local_src_engineUser)
+
+##### Network Pathing
+
+path_src_network = ./source_code/src/network
+local_src_network = $(path_src_network)/network_tcp_server.cpp $(path_src_network)/network_tcp_client.cpp
+
+NETWORK_SOURCE = $(local_src_network)
+
+
+##### Game Pathing
 
 path_src_game = ./source_code/src/game
 local_src_game = $(path_src_game)/game.cpp
 
 GAME_SOURCE = $(local_src_game)
 
-LOCAL_SOURCE = $(ENGINE_SOURCE) $(GAME_SOURCE)
+##### Final Pathing
+
+LOCAL_SOURCE = $(ENGINE_SOURCE) $(NETWORK_SOURCE) $(GAME_SOURCE) 
 
 
 #################################################################################
@@ -83,7 +105,7 @@ INCLUDES = $(EXTERNAL_DEPENDCIES) $(LOCAL_DEPENDCIES)
 libRARIES = -L$(glfw_lib) -L$(assimp_lib)
 
 C_FLAGS = $(INCLUDES)
-LD_FLAGS = $(libRARIES) -lws2_32 -lglfw3 -lopengl32 -lglu32 -lgdi32 -lassimp -lwinmm
+LD_FLAGS = $(libRARIES) -lws2_32 -lglfw3 -lopengl32 -lglu32 -lgdi32 -lassimp -lwinmm -lole32 -lavrt
 
 $(TARGET): $(CPP) # Final Output
 	$(CXX) $(OBJECTS) $(C_FLAGS) $(LD_FLAGS) -o$(TARGET)

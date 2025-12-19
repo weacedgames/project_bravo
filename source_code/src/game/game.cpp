@@ -51,21 +51,6 @@ void Game::initiate()
     std::vector<std::vector<std::string>> files = sceneLoad.loadEntities();
     loaded_entities = sceneLoad.generateEntities(files, loaded_shaders, loaded_models, loaded_sprites, loaded_geometry, &camera);
 
-    // Loading Audio    
-    AudioFile audioFile_1("./scene/assets/audio/stonemans_melody_rave.wav", 0);
-    AudioFile audioFile_2("./scene/assets/audio/stonemans_melody_8bit_exploration.wav", 1);
-    AudioFile audioFile_3("./scene/assets/audio/sfx_laser.wav", 2);
-
-    std::thread playAudio([audioFile_1, audioFile_2]
-    {
-        CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-        Audio audio(audioFile_1.audioData, audioFile_2.audioData);
-
-        audio.start();
-        CoUninitialize();
-    });
-    playAudio.detach();    
-
 };
 
 Game::~Game()
