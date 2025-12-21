@@ -3,27 +3,74 @@
 std::vector<std::vector<std::string>> SceneLoad::loadEntities()
 {
     std::vector<std::vector<std::string>> files;
-
     for (const auto& entry : std::filesystem::directory_iterator("./scene/entities"))
     {
-        std::vector<std::string> file;
-        
-        std::ifstream file_read("./scene/entities/" + entry.path().filename().string());
-        if(file_read.is_open())
-        {
-            std::string line;
-            while(getline(file_read, line)){
-                file.push_back(line);
+        if(entry.is_regular_file())
+        {   
+            std::vector<std::string> file;
+            std::ifstream file_read("./scene/entities/" + entry.path().filename().string());
+            if(file_read.is_open())
+            {
+                std::string line;
+                while(getline(file_read, line)){
+                    file.push_back(line);
+                }
+                file_read.close();
             }
-            file_read.close();
+            else
+            {
+                std::cerr << "ERROR::ENTITIES::LOADING_ENTITY" << std::endl;
+            }
+            files.push_back(file);
         }
-        else
+        else if(entry.is_directory())
         {
-            std::cerr << "ERROR::LOADING_Entity" << std::endl;
+            for (const auto& subEntry : std::filesystem::directory_iterator("./scene/entities/" + entry.path().filename().string()) )
+            {
+                if(entry.is_regular_file())
+                {
+                    std::vector<std::string> file;
+                    std::ifstream file_read("./scene/entities/" + entry.path().filename().string() + "/" + subEntry.path().filename().string());
+                    
+                    if(file_read.is_open())
+                    {
+                        std::string line;
+                        while(getline(file_read, line)){
+                            file.push_back(line);
+                        }
+                        file_read.close();
+                    }
+                    else
+                    {
+                        std::cerr << "ERROR::CLASS::LOADING_ENTITY" << std::endl;
+                    }
+                    files.push_back(file);
+                }
+                else if(entry.is_directory())
+                {
+                    for (const auto& subSubEntry : std::filesystem::directory_iterator("./scene/entities/" + entry.path().filename().string() + "/" + subEntry.path().filename().string()))
+                    {
+                        std::vector<std::string> file;
+                        std::ifstream file_read("./scene/entities/" + entry.path().filename().string() + "/" + subEntry.path().filename().string() + "/" + subSubEntry.path().filename().string());
+                        
+                        if(file_read.is_open())
+                        {
+                            std::string line;
+                            while(getline(file_read, line)){
+                                file.push_back(line);
+                            }
+                            file_read.close();
+                        }
+                        else
+                        {
+                            std::cerr << "ERROR::SUBCLASS::LOADING_ENTITY" << std::endl;
+                        }
+                        files.push_back(file);
+                    }
+                }
+            }
         }
-        files.push_back(file);
     }
-
     return files;
 };
 

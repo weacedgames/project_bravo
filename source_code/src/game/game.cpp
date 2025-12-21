@@ -1,5 +1,52 @@
 #include "game.h"
 
+// This shit is fucking up my code >:(
+//                    _____
+//                   (     \
+//                  (    \  \
+//                 (      \  \/\
+//                (        \    |
+//               (          )    |
+//              (            )\__/
+//              (____________)  
+//    ====================================
+//              |    \  /    |
+//              | ___ \/ ___ |
+//           ( )|| * |__| * ||( )
+//          (  )||___|  |___||(  )
+//           ( )|            |( )
+//            ()|    (--)    |()
+//            ()|            |()
+//           ( )|    ====    |( )
+//            ()|            |()
+//               \          /
+//                \________/ 
+//                   |  |
+//                  _|  |_
+//             ____/ \  / \_____
+//            /    \  \/  /     \
+//                  \ /\ /
+//                   /  \
+//      
+//
+//
+//
+//                                Game
+//                                 /\
+//                                /  \
+//                               /    \
+//                              /      \
+//                             /        \
+//                            /          \
+//                           /            \
+//                          /              \
+//                         /                \
+//                        /      Engine      \
+//                       /                    \
+//                      /                      \
+//                     /                        \
+//                    /__________________________\
+//    WxWidgets Editor                            Network     
 
 Game::Game(): graphics(WINDOW_WIDTH, WINDOW_HEIGHT, map_dimmensions), camera(WINDOW_WIDTH, WINDOW_HEIGHT, glm::vec3(0.0f)), keyboard(&graphics), mouse(&graphics, WINDOW_WIDTH, WINDOW_HEIGHT)
 {
@@ -13,25 +60,7 @@ Game::Game(): graphics(WINDOW_WIDTH, WINDOW_HEIGHT, map_dimmensions), camera(WIN
     }
     
 
-    //
-    //
-    //
-    //                                Game
-    //                                 /\
-    //                                /  \
-    //                               /    \
-    //                              /      \
-    //                             /        \
-    //                            /          \
-    //                           /            \
-    //                          /              \
-    //                         /                \
-    //                        /      Engine      \
-    //                       /                    \
-    //                      /                      \
-    //                     /                        \
-    //                    /__________________________\
-    //    WxWidgets Editor                            Network 
+
 
 
 };
@@ -50,6 +79,21 @@ void Game::initiate()
     SceneLoad sceneLoad;
     std::vector<std::vector<std::string>> files = sceneLoad.loadEntities();
     loaded_entities = sceneLoad.generateEntities(files, loaded_shaders, loaded_models, loaded_sprites, loaded_geometry, &camera);
+
+    // Load Cameras
+    for(size_t i=0;i<loaded_entities.size();i++) if(loaded_entities[i]->returnType()=="camera") loaded_cameras.push_back(loaded_entities[i]);
+
+//    // Loading Audio    
+//    AudioFile audioFile_1("./scene/assets/audio/stonemans_melody_rave.wav", 0);
+//    AudioFile audioFile_2("./scene/assets/audio/stonemans_melody_8bit_exploration.wav", 1);
+//    AudioFile audioFile_3("./scene/assets/audio/sfx_laser.wav", 2);
+//    std::thread([audioFile_1, audioFile_2]
+//    {
+//        CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+//        Audio audio(audioFile_1.audioData, audioFile_2.audioData);
+//        audio.start();
+//        CoUninitialize();
+//    }).detach();    
 
 };
 
@@ -79,6 +123,7 @@ void Game::mainloop()
     //  
     //////////////////////////////////////////////////////
     //////////////////////////////////////////////////////
+
 
     int selectPlayer = 1;
 
@@ -145,14 +190,14 @@ void Game::mainloop()
             loaded_entities[1]->setPosition(networkClient.player_1_cameraPosition);
         }
 
-        //processInputKeyboard(graphics.window, loaded_entities[0]);
+        //processInputKeyboard(graphics.window, loaded_cameras[0]);
         processInputMouse();
         
         ///////////////////////////////////////
         // Camera
         ///////////////////////////////////////
 
-        camera.setCameraPosition(loaded_entities[0]->returnPosition() / map_dimmensions);
+        camera.setCameraPosition(loaded_cameras[0]->returnPosition() / map_dimmensions);
         glm::mat4 projection = glm::perspective(glm::radians(camera.camera_fov), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.01f, 150.0f);
         glm::mat4 view = camera.getViewMatrix();
 
@@ -166,8 +211,6 @@ void Game::mainloop()
         ///////////////////////////////////////
         graphics.render(loaded_entities, projection, view);
     }
-
-    delete networkServer;
 };
 
 

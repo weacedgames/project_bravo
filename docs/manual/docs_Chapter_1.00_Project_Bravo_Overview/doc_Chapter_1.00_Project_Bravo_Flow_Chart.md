@@ -64,8 +64,8 @@ src/include --- Note: Contains header files and cpp files
                                        |------> Scene --- Note: Asset Loading and Scene Entity Loading
                                        |          |
                                        |          |
-                                       |          |------> Scene Load
-                                       |          |------> Scene Save
+                                       |          |------> Entity Load
+                                       |          |------> Entity Save
                                        |          |------> Config Load
                                        |
                                        |------> User --- Note: User Device Interfaces

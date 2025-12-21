@@ -56,6 +56,7 @@ private:
     std::vector<Sprite*> loaded_sprites;
     std::vector<Geometry*> loaded_geometry;
     std::vector<Entity*> loaded_entities;
+    std::vector<Entity*> loaded_cameras;
 
 
 private:
