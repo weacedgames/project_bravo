@@ -13,6 +13,7 @@
 #include <stb/stb_image.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -21,9 +22,12 @@
 #include "shader.h"
 
 
+
 class Model
 {
 private:
+    Assimp::Importer import;
+
     std::string modelPath;
     std::vector<Texture> textures_loaded;
     std::vector<Mesh> meshes;
@@ -46,6 +50,23 @@ private:
     float y_max;
     float z_min;
     float z_max;
+
+public:
+
+    ////////////////////////////////////////////////////////////////////////////
+    // START Animation
+    ////////////////////////////////////////////////////////////////////////////
+    aiAnimation* animation = nullptr;
+    const aiScene* scene = nullptr;
+    
+    std::vector<int> boneIDs;
+    std::vector<float> weights;
+    
+    std::map<std::string, int> boneMap;
+    std::vector<glm::mat4> boneOffsets;
+    ////////////////////////////////////////////////////////////////////////////
+    // END Animation
+    ////////////////////////////////////////////////////////////////////////////
 
 public:
     int assetModelID;

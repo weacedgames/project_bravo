@@ -1,52 +1,11 @@
 #include "game.h"
 
-// This shit is fucking up my code >:(
-//                    _____
-//                   (     \
-//                  (    \  \
-//                 (      \  \/\
-//                (        \    |
-//               (          )    |
-//              (            )\__/
-//              (____________)  
-//    ====================================
-//              |    \  /    |
-//              | ___ \/ ___ |
-//           ( )|| * |__| * ||( )
-//          (  )||___|  |___||(  )
-//           ( )|            |( )
-//            ()|    (--)    |()
-//            ()|            |()
-//           ( )|    ====    |( )
-//            ()|            |()
-//               \          /
-//                \________/ 
-//                   |  |
-//                  _|  |_
-//             ____/ \  / \_____
-//            /    \  \/  /     \
-//                  \ /\ /
-//                   /  \
-//      
-//
-//
-//
-//                                Game
-//                                 /\
-//                                /  \
-//                               /    \
-//                              /      \
-//                             /        \
-//                            /          \
-//                           /            \
-//                          /              \
-//                         /                \
-//                        /      Engine      \
-//                       /                    \
-//                      /                      \
-//                     /                        \
-//                    /__________________________\
-//    WxWidgets Editor                            Network     
+struct EntityClass
+{
+    std::string className;
+    std::vector<Entity*> entities;
+};
+
 
 Game::Game(): graphics(WINDOW_WIDTH, WINDOW_HEIGHT, map_dimmensions), camera(WINDOW_WIDTH, WINDOW_HEIGHT, glm::vec3(0.0f)), keyboard(&graphics), mouse(&graphics, WINDOW_WIDTH, WINDOW_HEIGHT)
 {
@@ -58,11 +17,6 @@ Game::Game(): graphics(WINDOW_WIDTH, WINDOW_HEIGHT, map_dimmensions), camera(WIN
 
         initiate();
     }
-    
-
-
-
-
 };
 
 
@@ -73,27 +27,90 @@ void Game::initiate()
     loaded_models = configLoad.loadModels();
     loaded_shaders = configLoad.loadShaders();
     loaded_sprites = configLoad.loadSprites();
-    loaded_geometry.push_back(new Geometry(0));
+    loaded_geometry.push_back(new Geometry(0)); 
+
+    std::cout << "Loading Assets Completed" << std::endl;
 
     // Building Scene
     SceneLoad sceneLoad;
     std::vector<std::vector<std::string>> files = sceneLoad.loadEntities();
+
     loaded_entities = sceneLoad.generateEntities(files, loaded_shaders, loaded_models, loaded_sprites, loaded_geometry, &camera);
+
+    std::cout << "Scene Loading Complete" << std::endl;
 
     // Load Cameras
     for(size_t i=0;i<loaded_entities.size();i++) if(loaded_entities[i]->returnType()=="camera") loaded_cameras.push_back(loaded_entities[i]);
 
-//    // Loading Audio    
-//    AudioFile audioFile_1("./scene/assets/audio/stonemans_melody_rave.wav", 0);
-//    AudioFile audioFile_2("./scene/assets/audio/stonemans_melody_8bit_exploration.wav", 1);
-//    AudioFile audioFile_3("./scene/assets/audio/sfx_laser.wav", 2);
-//    std::thread([audioFile_1, audioFile_2]
-//    {
-//        CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-//        Audio audio(audioFile_1.audioData, audioFile_2.audioData);
-//        audio.start();
-//        CoUninitialize();
-//    }).detach();    
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // WORK IN PROGRESS
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    // Thoughts
+
+    // Duplicate Class
+    // Duplicate needed entities
+    // Assign it a id to be referenced
+    // I dont like classes or sub classes to be the id because its soul job is categorize and template
+    // I dont like using tag because thats not it intent
+    // A class ID is needed I think
+
+    // 0  = Template
+    // 1+ =  Is Copy or duplicate
+    // 2  = Means there are 3x copies present
+
+    // CLASS  ID is a food for thought to add to file
+    // Entity ID is meant for each Entity
+
+    // THIS IS A SKETCH
+    // Not sure yet
+    // Generate Classes
+
+    // std::vector<EntityClass> classes;
+    // for(size_t i=0;i<loaded_entities.size();i++) 
+    // {
+    //     for(size_t j=0;j<classes.size(); j++)
+    //     {
+    //         if(loaded_entities[i]->returnClass()!=classes[j].className)
+    //         {
+    //             EntityClass entityClass;
+    //             entityClass.className = loaded_entities[i]->returnName();
+    //             entityClass.entities.push_back(loaded_entities[i]);
+    //             classes.push_back(entityClass);
+    //         }
+    //         else
+    //         {
+    //             classes[j].entities.push_back(loaded_entities[i]);
+    //         }
+    //     }
+    // }
+
+
+    // TO DO:
+    // Finish Animation
+    // Mesh needs to also contain bone data so it also can be passed to the shader
+    // 
+
+    // THINKING.... 12:54 AM
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // WORK IN PROGRESS
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // I want to put this thread inside the class
+    // Loading Audio    
+    AudioFile audioFile_1("./scene/assets/audio/stonemans_melody_rave.wav", 0);
+    AudioFile audioFile_2("./scene/assets/audio/stonemans_melody_8bit_exploration.wav", 1);
+    AudioFile audioFile_3("./scene/assets/audio/sfx_laser.wav", 2);
+    std::thread([audioFile_1, audioFile_2]
+    {
+        CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+        Audio audio(audioFile_1.audioData, audioFile_2.audioData);
+        audio.start();
+        CoUninitialize();
+    }).detach();    
 
 };
 
@@ -111,7 +128,6 @@ void Game::play()
 
 void Game::mainloop()
 {
-
     ///////////////////////////////////////////////////////
     // Gameplan
     //////////////////////////////////////////////////////
@@ -124,11 +140,12 @@ void Game::mainloop()
     //////////////////////////////////////////////////////
     //////////////////////////////////////////////////////
 
+    // I dont like the hard coding of this. Will need to create a elegant solution for networking.
 
     int selectPlayer = 1;
 
     NetworkServerUDP* networkServer = nullptr;
-    
+
     if(selectPlayer==1)
     {
         networkServer = new NetworkServerUDP;
@@ -165,9 +182,6 @@ void Game::mainloop()
                 networkClient.player_1_action = 5;
             if (keyboard.inputKeyboard() == 167) // Alt
                 networkClient.player_1_action = 6;
-
-            loaded_entities[0]->setPosition(networkClient.player_1_cameraPosition);
-            loaded_entities[1]->setPosition(networkClient.player_2_cameraPosition);
         }
 
         if(selectPlayer == 2)
@@ -185,12 +199,9 @@ void Game::mainloop()
                 networkClient.player_2_action = 5;
             if (keyboard.inputKeyboard() == 167) // Alt
                 networkClient.player_2_action = 6;
-
-            loaded_entities[0]->setPosition(networkClient.player_2_cameraPosition);
-            loaded_entities[1]->setPosition(networkClient.player_1_cameraPosition);
         }
 
-        //processInputKeyboard(graphics.window, loaded_cameras[0]);
+        processInputKeyboard(graphics.window, loaded_cameras[0]);
         processInputMouse();
         
         ///////////////////////////////////////
@@ -206,10 +217,12 @@ void Game::mainloop()
         ///////////////////////////////////////
         
 
+
         ///////////////////////////////////////
         // Render
         ///////////////////////////////////////
-        graphics.render(loaded_entities, projection, view);
+        
+        graphics.render(graphics.deltaTime, loaded_entities, projection, view);
     }
 };
 
@@ -237,36 +250,6 @@ void Game::processInputKeyboard(GLFWwindow *window, Entity *entity)
 
 void Game::processInputMouse()
 {
-    // This shit is fucking up my code >:(
-    //                    _____
-    //                   (     \
-    //                  (    \  \
-    //                 (      \  \/\
-    //                (        \    |
-    //               (          )    |
-    //              (            )\__/
-    //              (____________)  
-    //    ====================================
-    //              |    \  /    |
-    //              | ___ \/ ___ |
-    //           ( )|| * |__| * ||( )
-    //          (  )||___|  |___||(  )
-    //           ( )|            |( )
-    //            ()|    (--)    |()
-    //            ()|            |()
-    //           ( )|    ====    |( )
-    //            ()|            |()
-    //               \          /
-    //                \________/ 
-    //                   |  |
-    //                  _|  |_
-    //             ____/ \  / \_____
-    //            /    \  \/  /     \
-    //                  \ /\ /
-    //                   /  \
-    //          
-    
-
     if(Mouse::cursor_active)
     {
         camera.processMouseInput(Mouse::cursor_xPos, Mouse::cursor_yPos);

@@ -1,4 +1,4 @@
-#include "network_tcp_client.h"
+#include "network_udp_client.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Protocol
@@ -13,7 +13,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-NetworkClientTCP::NetworkClientTCP(int setPlayer)
+NetworkClientUDP::NetworkClientUDP(int setPlayer)
 {
     //////////////////////////////////////
     // PHASE 2 Start 8081 Server
@@ -38,7 +38,7 @@ NetworkClientTCP::NetworkClientTCP(int setPlayer)
         std::cerr << "CLIENT_RECEIVER::ERROR::WSA_STARTUP_FAILED" << std::endl;
     }
 
-    clientReceiverSocket = socket(AF_INET, SOCK_STREAM, 0);
+    clientReceiverSocket = socket(AF_INET, SOCK_DGRAM, 0);
 
     if(clientReceiverSocket == -1)
     {
@@ -58,62 +58,90 @@ NetworkClientTCP::NetworkClientTCP(int setPlayer)
         WSACleanup();
     }
     
-    if(listen(clientReceiverSocket, 5) == SOCKET_ERROR)
-    {
-        std::cerr << "CLIENT_RECEIVER::ERROR::FAILED_TO_LISTEN::CODE::" << std::to_string(WSAGetLastError()) << std::endl;
-        closesocket(clientReceiverSocket);
-        WSACleanup();
-    }
-
     std::cout << "CLIENT_RECEIVER::SERVER_STARTED" << std::endl;
-
     std::cout << "---------------------------------------------------------------\n" << std::endl;
 
     ///////////////////////////////////////////////////////////////////////////
 
     // Phase 2
-    std::thread thread_receiver(&NetworkClientTCP::serverHandle_receiver, this);
+    std::thread thread_receiver(&NetworkClientUDP::serverHandle_receiver, this);
     thread_receiver.detach();
 
     // Phase 3
-    std::thread thread_sender(&NetworkClientTCP::serverHandle_sender, this);
+    std::thread thread_sender(&NetworkClientUDP::serverHandle_sender, this);
     thread_sender.detach();
 };
 
-NetworkClientTCP::~NetworkClientTCP()
+NetworkClientUDP::~NetworkClientUDP()
 {
     closesocket(clientReceiverSocket);
     WSACleanup();
     std::cout << "SERVER_RECEIVER::SERVER_ENDED" << std::endl;
 };
 
+
+//////////////////////////////////////
+// PHASE 3 Connect to 8080 Server
+//////////////////////////////////////
+void NetworkClientUDP::serverHandle_sender()
+{
+    SOCKET clientSenderSocket = socket(AF_INET,SOCK_DGRAM,0);
+
+    if(clientSenderSocket == -1)
+    {
+        WSACleanup();
+        std::cerr << "CLIENT_SENDER::ERROR::FAILED_TO_CREATE_SOCKET" << std::endl;
+    }
+
+    sockaddr_in serverReceiverAddress;
+    serverReceiverAddress.sin_family = AF_INET;
+    serverReceiverAddress.sin_port = htons(8080);
+    serverReceiverAddress.sin_addr.s_addr = inet_addr(HOST_IP);
+
+    while(true)
+    {   
+        // Note: Send Player Actions
+        std::string action;
+        
+        if(selectedPlayer==1)
+        {
+            action = "1," + std::to_string(player_1_action);
+        }
+        
+        if(selectedPlayer==2)
+        {
+            action = "2," + std::to_string(player_2_action);
+        }
+
+        const char* message = action.c_str();
+        int message_len = (int)strlen(message);
+        int server_addr_len = sizeof(serverReceiverAddress);
+
+        int result = sendto(clientSenderSocket, message, message_len, 0, (sockaddr*)&serverReceiverAddress, server_addr_len);
+        if (result == SOCKET_ERROR)
+        {
+            std::cerr << "SERVER_SENDER::ERROR::SEND_FAILED" << std::endl;
+            std::cerr << WSAGetLastError() << std::endl;
+            return;
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    }
+};
+
+
 //////////////////////////////////////
 // PHASE 6 Receiving 8081
 //////////////////////////////////////
-void NetworkClientTCP::serverHandle_receiver()
+void NetworkClientUDP::serverHandle_receiver()
 {
-    sockaddr_in serverSenderAddress;
-    int serverSenderSize = sizeof(serverSenderAddress);
-    SOCKET serverSenderSocket = accept( clientReceiverSocket, (sockaddr*)&serverSenderAddress, &serverSenderSize);
-    std::cout << "CLIENT_RECEIVER::SERVER_SENDER_CONNECTED" << std::endl;
-
     while(true)
     {
         // Note:: Client receive info on players positions for rendering
         char buffer[1024] = {};
-        int bytesReceived = recv(serverSenderSocket, buffer, sizeof(buffer), 0);
-        
-
-        if (bytesReceived == SOCKET_ERROR)
-        {
-            std::cerr << "CLIENT_RECEIVER::ERROR::RECV_FAILED" << std::endl;
-            break;  // Exit loop if there was an error with receiving data
-        }
-        else if (bytesReceived == 0)
-        {
-            std::cout << "CLIENT_RECEIVER::SERVER_CLOSED_CONNECTION" << std::endl;
-            break;  // Exit loop if the server closed the connection
-        }
+        int server_addr_len = sizeof(serverSenderAddress);
+        recvfrom( clientReceiverSocket, buffer, sizeof(buffer), 0, (sockaddr*)&serverSenderAddress, &server_addr_len);
 
         std::string data = buffer;
 
@@ -135,58 +163,9 @@ void NetworkClientTCP::serverHandle_receiver()
         std::getline(ss, yPos_2, ',');
         std::getline(ss, zPos_2, ',');
 
-
         player_1_cameraPosition = glm::vec3( std::stof(xPos_1), std::stof(yPos_1), std::stof(zPos_1) );
         player_2_cameraPosition = glm::vec3( std::stof(xPos_2), std::stof(yPos_2), std::stof(zPos_2) );
     }
-    
-    closesocket(serverSenderSocket);
+
     std::cout << "CLIENT_RECEIVER::DISCONNECTED_FROM_SERVER_SENDER" << std::endl;
-};
-
-//////////////////////////////////////
-// PHASE 3 Connect to 8080 Server
-//////////////////////////////////////
-void NetworkClientTCP::serverHandle_sender()
-{
-    SOCKET clientSenderSocket = socket(AF_INET,SOCK_STREAM,0);
-
-    if(clientSenderSocket == -1)
-    {
-        WSACleanup();
-        std::cerr << "CLIENT_SENDER::ERROR::FAILED_TO_CREATE_SOCKET" << std::endl;
-    }
-
-    sockaddr_in serverReceiverAddress;
-    serverReceiverAddress.sin_family = AF_INET;
-    serverReceiverAddress.sin_port = htons(8080);
-    serverReceiverAddress.sin_addr.s_addr = inet_addr(HOST_IP);
-
-    connect(clientSenderSocket, (struct sockaddr*)&serverReceiverAddress, sizeof(serverReceiverAddress));
-    std::cout << "CLIENT_SENDER::CONNECTED_TO_SERVER_RECEIVER::" << serverReceiverAddress.sin_addr.s_addr << "\n" << std::endl;
-
-    while(true)
-    {   
-        // Note: Send Player Actions
-        std::string action;
-        
-        if(selectedPlayer==1)
-        {
-            action = "1," + std::to_string(player_1_action);
-        }
-        
-        if(selectedPlayer==2)
-        {
-            action = "2," + std::to_string(player_2_action);
-        }
-
-        const char* message = action.c_str();
-
-        send(clientSenderSocket, message, strlen(message), 0);
-    }
-
-    closesocket(clientSenderSocket);
-    WSACleanup();
-
-    std::cout << "CLIENT_SENDER::DISCONNECTED_FROM_SERVER_RECEIVER" << std::endl;
 };

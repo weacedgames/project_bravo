@@ -27,7 +27,7 @@ std::vector<std::vector<std::string>> SceneLoad::loadEntities()
         {
             for (const auto& subEntry : std::filesystem::directory_iterator("./scene/entities/" + entry.path().filename().string()) )
             {
-                if(entry.is_regular_file())
+                if(subEntry.is_regular_file())
                 {
                     std::vector<std::string> file;
                     std::ifstream file_read("./scene/entities/" + entry.path().filename().string() + "/" + subEntry.path().filename().string());
@@ -35,7 +35,8 @@ std::vector<std::vector<std::string>> SceneLoad::loadEntities()
                     if(file_read.is_open())
                     {
                         std::string line;
-                        while(getline(file_read, line)){
+                        while(getline(file_read, line))
+                        {
                             file.push_back(line);
                         }
                         file_read.close();
@@ -46,7 +47,7 @@ std::vector<std::vector<std::string>> SceneLoad::loadEntities()
                     }
                     files.push_back(file);
                 }
-                else if(entry.is_directory())
+                else if(subEntry.is_directory())
                 {
                     for (const auto& subSubEntry : std::filesystem::directory_iterator("./scene/entities/" + entry.path().filename().string() + "/" + subEntry.path().filename().string()))
                     {
@@ -56,7 +57,8 @@ std::vector<std::vector<std::string>> SceneLoad::loadEntities()
                         if(file_read.is_open())
                         {
                             std::string line;
-                            while(getline(file_read, line)){
+                            while(getline(file_read, line))
+                            {
                                 file.push_back(line);
                             }
                             file_read.close();

@@ -21,18 +21,25 @@ void Mesh::setupMesh()
 
     //vertexpositions
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),
-    (void*)0);
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(Vertex), (void*)0);
 
     //vertexnormals
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),
-    (void*)offsetof(Vertex,Normal));
+    glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof(Vertex), (void*)offsetof(Vertex,Normal));
 
     //vertextexturecoords
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),
-    (void*)offsetof(Vertex,TexCoords));
+    glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(void*)offsetof(Vertex,TexCoords));
+    
+
+    glEnableVertexAttribArray(3);
+    glVertexAttribIPointer(3, 4, GL_INT, sizeof(Vertex), (void*)offsetof(Vertex, m_BoneIDs));
+
+    // 5. Bone Weights (Standard Float Attribute)
+    // Note: You missed this in your snippet!
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_Weights));
+
     glBindVertexArray(0);
 
 };

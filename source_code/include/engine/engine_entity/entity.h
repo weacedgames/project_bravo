@@ -42,6 +42,18 @@ private:
     bool enableCollider;
 
 public:
+    ////////////////////////////////////////////////////////////////////////////
+    // START Animation
+    ////////////////////////////////////////////////////////////////////////////
+    std::vector<glm::mat4> finalBones;
+    float time = 0.0f;
+    ////////////////////////////////////////////////////////////////////////////
+    // END Animation
+    ////////////////////////////////////////////////////////////////////////////
+
+public:
+    Entity();
+
     void setCamera(Camera* handleCamera);
     void setShader(Shader* handleShader);
     void setShaderBoundingBox(Shader* handleShaderBB);
@@ -76,6 +88,7 @@ public:
     std::string returnType();
     int returnID();
     std::string returnName();
+    std::string returnClass();
     std::string returnTag();
 
     glm::vec3 returnPosition();

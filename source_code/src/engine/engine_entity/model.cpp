@@ -12,8 +12,7 @@ Model::Model(std::string const &path, int setId)
 
 void Model::loadModel(std::string const &path)
 {
-    Assimp::Importer import;
-    const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);	
+    scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);	
 	
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
@@ -106,7 +105,60 @@ void Model::processNode(aiNode *node, const aiScene *scene)
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh *mesh = scene->mMeshes[node->mMeshes[i]]; 
-        meshes.push_back(processMesh(mesh, scene));			
+        meshes.push_back(processMesh(mesh, scene));	
+
+        ////////////////////////////////////////////////////////////////////////////
+        // START Animation
+        ////////////////////////////////////////////////////////////////////////////
+        if(scene->mNumAnimations != 0)
+        {
+            animation = scene->mAnimations[0];
+            
+            if(!animation) continue;
+            if(animation->mNumChannels == 0) continue;
+            if(!animation->mChannels) continue;
+            if(mesh->mNumBones == 0) continue;
+
+            boneIDs.assign(mesh->mNumVertices * 4, 0);
+            weights.assign(mesh->mNumVertices * 4, 0.0f);
+
+            for (unsigned boneIndex = 0; boneIndex < mesh->mNumBones; boneIndex++)
+            {
+                aiBone* bone = mesh->mBones[boneIndex];
+                if(!bone || !bone->mName.C_Str()) continue;
+                boneMap[bone->mName.C_Str()] = boneIndex;
+
+                // This represents keyframe 0 Bone Transform Data
+                aiMatrix4x4& o = bone->mOffsetMatrix;
+                glm::mat4 offset = glm::transpose(glm::mat4(
+                    o.a1, o.b1, o.c1, o.d1,
+                    o.a2, o.b2, o.c2, o.d2,
+                    o.a3, o.b3, o.c3, o.d3,
+                    o.a4, o.b4, o.c4, o.d4
+                ));
+                boneOffsets.push_back(offset);
+
+                for(unsigned weightIndex = 0; weightIndex < bone->mNumWeights; weightIndex++)
+                {
+                    unsigned vertexID = bone->mWeights[weightIndex].mVertexId;
+                    float vertexWeight = bone->mWeights[weightIndex].mWeight;
+
+                    for(int k = 0; k < 4; k++)
+                    {
+                        if(weights[vertexID*4 + k] == 0.0f)
+                        {
+                            boneIDs[vertexID*4 + k] = boneIndex;
+                            weights[vertexID*4 + k] = vertexWeight;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        ////////////////////////////////////////////////////////////////////////////
+        // END Animation
+        ////////////////////////////////////////////////////////////////////////////
+
     }
 
     for(unsigned int i = 0; i < node->mNumChildren; i++)
@@ -114,7 +166,6 @@ void Model::processNode(aiNode *node, const aiScene *scene)
         processNode(node->mChildren[i], scene);
     }
 };
-
 
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 {

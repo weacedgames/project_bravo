@@ -1,5 +1,10 @@
 #include "entity.h"
 
+Entity::Entity()
+{
+    finalBones.assign(100, glm::mat4(1.0f));
+};
+
 void Entity::setCamera(Camera* handleCamera){entity_camera = handleCamera;};
 void Entity::setShader(Shader* handleShader){entity_shader = handleShader;};
 void Entity::setShaderBoundingBox(Shader* handleShaderBB){entity_shader = handleShaderBB;};
