@@ -46,7 +46,9 @@ Project Bravo's Source Code
 - Project Bravo Source Code Flow Chart
     - ![Project Bravo Screenshot](../../../docs/images/project_bravo_layout_source_code.png "Project Bravo Screeshot")
     - Its made up of two parts 'Game' and 'Enginge', both `./source_code/include` and `./source_code/src` directories are structured the same way.
-        - Audio: Not Operational
+        - Audio: 
+            - `Audio` A 16 bit audio mixer using 2x voices outputed to Windows Audio API, Work In Progress
+            - `Audio File` Reading WAV and outputting to a 16 bit floating point vector
         - Entitiy: All spawnable objects in 2D and 3D world are referred to as a Entity
             - `Entity` Defines what a Entity is and contains
             - `Camera` Camera Class Handle
