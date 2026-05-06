@@ -20,3 +20,19 @@ Project Bravo is a liight weight 2D and 3D Game Engine based on the Entity Compo
 - No Pre Error Checking for Loading Game Assets, The Engine is expecting accurate data when loading game assets, reasoning is speed
 
 # BODY
+ - Engine Features
+    - Graphics: OpenGL 3D Model Rendering
+    - Graphics: OpenGL 3D Model Bounding Box Rendering
+    - Graphics: OpenGL Geometery Rectangular Cuboids
+    - Graphics: OpenGL 2D Sprite Rendering
+    - Entity Class Based System
+    - Audio: 16 Bit Audio Mixer Windows Audio API
+    - Audio: WAV File Reader
+    - Physics: Rigig Body Simple Directional Acceleration
+    - Physics: Collision (AABB) Axis Aligned Bounding Box
+    - Physics: Collision Raycast
+    - UDP or TCP Authoritative Multithreaded Server
+    - UDP or TCP Multithreaded Client
+    - Input Peripheral: Keyboard
+    - Input Peripheral: Mouse
+    - Operating System: Windows
