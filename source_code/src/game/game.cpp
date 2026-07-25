@@ -484,52 +484,92 @@ void Game::initiate()
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    // Thoughts
-
-    // Duplicate Class
-    // Duplicate needed entities
-    // Assign it a id to be referenced
-    // I dont like classes or sub classes to be the id because its soul job is categorize and template
-    // I dont like using tag because thats not it intent
-    // A class ID is needed I think
-
-    // 0  = Template
-    // 1+ =  Is Copy or duplicate
-    // 2  = Means there are 3x copies present
-
-    // CLASS  ID is a food for thought to add to file
-    // Entity ID is meant for each Entity
-
-    // THIS IS A SKETCH
-    // Not sure yet
-    // Generate Classes
-
-    // std::vector<EntityClass> classes;
-    // for(size_t i=0;i<loaded_entities.size();i++) 
-    // {
-    //     for(size_t j=0;j<classes.size(); j++)
-    //     {
-    //         if(loaded_entities[i]->returnClass()!=classes[j].className)
-    //         {
-    //             EntityClass entityClass;
-    //             entityClass.className = loaded_entities[i]->returnName();
-    //             entityClass.entities.push_back(loaded_entities[i]);
-    //             classes.push_back(entityClass);
-    //         }
-    //         else
-    //         {
-    //             classes[j].entities.push_back(loaded_entities[i]);
-    //         }
-    //     }
-    // }
 
 
-    // TO DO:
-    // Finish Animation
-    // Mesh needs to also contain bone data so it also can be passed to the shader
-    // 
 
-    // THINKING.... 12:54 AM
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+//            ---WEACEDGAMES PERSONNEL---             //
+//                                                    //
+//                                                    //
+// NOTE ID: 0000 0000 0000                            //
+// NOTE DATE: 07-25-2026                              //
+//                                                    //
+// PROGRAMMER NOTE:                                   //
+// -> Thoughts....                                    //
+//     - Duplicate Class                              //
+//     - Duplicate needed entities                    //
+//     - Assign it a id to be referenced              //
+//     - I dont like classes or sub classes to be     //
+//       the id because its soul job is categorize    //
+//       and template                                 //
+//     - I dont like using tag because thats not      //
+//       it intent.                                   //
+//     - A class ID is needed I think                 //
+//     - 0  = Template                                //
+//     - 1+ =  Is Copy or duplicate                   //
+//     - 2  = Means there are 3x copies present       //
+//     - CLASS  ID is a food for thought to           //
+//       add to file.                                 //
+//     - Entity ID is meant for each Entity           //
+//                                                    //
+//                                                    //
+// -> THIS IS A SKETCH, not sure yet on how to        //
+// generate generate classes dynamically              //
+// or effiecently                                     //
+//                                                    //
+//                                                    //
+//            ---WEACEDGAMES PERSONNEL---             //
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+
+// std::vector<EntityClass> classes;
+// for(size_t i=0;i<loaded_entities.size();i++) 
+// {
+//     for(size_t j=0;j<classes.size(); j++)
+//     {
+//         if(loaded_entities[i]->returnClass()!=classes[j].className)
+//         {
+//             EntityClass entityClass;
+//             entityClass.className = loaded_entities[i]->returnName();
+//             entityClass.entities.push_back(loaded_entities[i]);
+//             classes.push_back(entityClass);
+//         }
+//         else
+//         {
+//             classes[j].entities.push_back(loaded_entities[i]);
+//         }
+//     }
+// }
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+//            ---WEACEDGAMES PERSONNEL---             //
+//                                                    //
+//                                                    //
+// NOTE ID: 0000 0000 0000                            //
+// NOTE DATE: 07-25-2026                              //
+//                                                    //
+// PROGRAMMER NOTE:                                   //
+// -> ToDo: Finish Animatio                           //
+//                                                    //
+// -> ToDo: Mesh needs to also contain bone           //
+// data so it also can be passed to the shader        //
+//                                                    //
+// -> THINKING.... 12:54 AM                           //
+//                                                    //
+//                                                    //
+//            ---WEACEDGAMES PERSONNEL---             //
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // WORK IN PROGRESS
