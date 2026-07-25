@@ -43,6 +43,7 @@ public:
     int initiate();
     void test();
     void render(float deltaTime, std::vector<Entity*> entitys, glm::mat4 projection, glm::mat4 view);
+    void animation(Entity* entity, Shader& entitiesShader);
 
 };
 

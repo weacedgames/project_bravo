@@ -1,3 +1,28 @@
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+//                                                                        //
+//                                                                        //
+// Author: WeAcEd GaMeS                                                   //
+// Version: version.alpha.1.0                                             //
+// File: entity.cpp                                                       //
+//                                                                        //
+// Summary Metadata:                                                      //
+// - Date Created: 07-25-2026                                             //
+// - Date Updated: 07-25-2026                                             //
+//                                                                        //
+// Summary Description:                                                   //
+// - This is a class based entity system. Fat and Bulky but simple as     //
+// hell.                                                                  //
+//                                                                        //
+// Summary Notes:                                                         //
+// - This is currently a class based entity system. I would like to       //
+// eventually have a Entity Component System also, one for effieceny      //
+// the other for simplicty.                                               //
+//                                                                        //
+//                                                                        //
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
 #include "entity.h"
 
 Entity::Entity()
