@@ -1,32 +1,35 @@
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | //
+//                      ---WEACEDGAMES PERSONNEL---                       //
 //                                                                        //
 //                                                                        //
-// Author: WeAcEd GaMeS                                                   //
-// Version: version.alpha.1.0                                             //
-// File: main.cpp                                                         //
+// SUMMARY METADATA:                                                      //
+// -> Author: WeAcEd GaMeS                                                //
+// -> Version: version.alpha.1.0                                          //
+// -> File: main.cpp                                                      //
+// -> Date Created: 07-25-2026                                            //
+// -> Date Updated: 07-25-2026                                            //
 //                                                                        //
-// Summary Metadata:                                                      //
-// - Date Created: 07-25-2026                                             //
-// - Date Updated: 07-25-2026                                             //
-//                                                                        //
-// Summary Description:                                                   //
-// - Main CPP, the making of the baby of this special program             //
+// SUMMARY DESCRIPTION:                                                   //
+// -> Main CPP, the making of the baby of this special program            //
 // Here be the birth the making of the this dumb of bitch program         //
 // Here is where the Father OS and EXE/Application get it on, make        //
 // the child game process. And that folks is how babies are made...       //
 // Bow chika wow wow.....                                                 //
 //                                                                        //
-// Summary Notes:                                                         //
-// - I need to finish the ASCII Art here sometime                         //
+// SUMARRY NOTES:                                                         //
+// -> I need to finish the ASCII Art here sometime                        //
 //                                                                        //
-// - The Greys.... They are watching!!!!! Smell the amonia                //
+// -> The Greys.... They are watching!!!!! Smell the amonia               //
 // coming in the AIR TONIGHT....OoooooHHHHHhhhoooo                        //
 // Duh Duh Duh DUh DuHHHHHH                                               //
 //                                                                        //
-// - Programmer MadNeEeesSSssSss                                          //
+// -> Programmer MadNeEeesSSssSss                                         //
 //                                                                        //
 //                                                                        //
+//                      ---WEACEDGAMES PERSONNEL---                       //
+//  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | //
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
@@ -1085,38 +1088,86 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///                                                                                                        ///
-///                                                                                                        ///
-///                                                                                                        ///
-///                                                                                                        ///
-///                                                 Game                                                   ///
-///                                                  /\                                                    ///
-///                                                 /  \                                                   ///
-///                                                /    \                                                  ///
-///                                               /      \                                                 ///
-///                                              /        \                                                ///
-///                                             /          \                                               ///
-///                                            /            \                                              ///
-///                                           /              \                                             ///
-///                                          /                \                                            ///
-///                                         /      Engine      \                                           ///
-///                                        /                    \                                          ///
-///                                       /                      \                                         ///
-///                                      /                        \                                        ///
-///                                     /__________________________\                                       ///
-///                           WxWidgets Editor                    Network                                  ///
-///                                                                                                        ///
-///                                                                                                        ///
-///                                                                                                        ///
-///                                                                                                        ///
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+//            ---WEACEDGAMES PERSONNEL---             //
+//                                                    //
+//                                                    //
+// NOTE ID: 0000 0000 0000                            //
+// NOTE DATE: 07-25-2026                              //
+//                                                    //
+// PROGRAMMER NOTE:                                   //
+// -> The Game Engine can be though of as triangle,   //
+// with the engine being in the center. Each          //
+// component Game, Network, and Editor                //
+// can access engine components to build up logic.    //
+//                                                    //
+// Refrence "DIAGRAM ID 0000 0000 0000" to visulize   //
+// this game engine.                                  //
+//                                                    //
+//                                                    //
+//            ---WEACEDGAMES PERSONNEL---             //
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+//            ---WEACEDGAMES PERSONNEL---             //
+//                                                    //
+//                                                    //
+//  DIAGRAM ID: 0000 0000 0000                        //
+//                                                    //
+//                        Game                        //
+//                         /\                         //
+//                        /  \                        //
+//                       /    \                       //
+//                      /      \                      //
+//                     /        \                     //
+//                    /          \                    //
+//                   /            \                   //
+//                  /              \                  //
+//                 /                \                 //
+//                /      Engine      \                //
+//               /                    \               //
+//              /                      \              //
+//             /                        \             //
+//            /__________________________\            //
+//  WxWidgets Editor                    Network       //
+//                                                    //
+//                                                    //
+//            ---WEACEDGAMES PERSONNEL---             //
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 
 #include "game.h"
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+//            ---WEACEDGAMES PERSONNEL---             //
+//                                                    //
+//                                                    //
+// NOTE ID: 0000 0000 0000                            //
+// NOTE DATE: 07-25-2026                              //
+//                                                    //
+// PROGRAMMER NOTE:                                   //
+// -> This is application's main function.            //
+// The code below, starting everything off by         //
+// calling Game clas. Inside this class is a play     //
+// function. This initialize the game, starting       //
+// the mainloop. Inside the mainloop is where the     //
+// game logic is executed.                            //
+//                                                    //
+//                                                    //
+//            ---WEACEDGAMES PERSONNEL---             //
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[])
 {

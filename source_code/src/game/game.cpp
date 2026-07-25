@@ -1,34 +1,37 @@
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | //
+//                      ---WEACEDGAMES PERSONNEL---                       //
 //                                                                        //
 //                                                                        //
-// Author: WeAcEd GaMeS                                                   //
-// Version: version.alpha.1.0                                             //
-// File: game.cpp                                                         //
+// SUMMARY METADATA:                                                      //
+// -> Author: WeAcEd GaMeS                                                //
+// -> Version: version.alpha.1.0                                          //
+// -> File: game.cpp                                                      //
+// -> Date Created: 07-25-2026                                            //
+// -> Date Updated: 07-25-2026                                            //
 //                                                                        //
-// Summary Metadata:                                                      //
-// - Date Created: 07-25-2026                                             //
-// - Date Updated: 07-25-2026                                             //
-//                                                                        //
-// Summary Description:                                                   //
-// - This is the beginning, everything starts here. Graphics pipeline     //
+// SUMMARY DESCRIPTION:                                                   //
+// -> This is the beginning, everything starts here. Graphics pipeline    //
 // is initialized. Server and Client pipeline is initialized.             //
 // Game logic, is also written here.                                      //
 //                                                                        //
-// Summary Notes:                                                         //
-// - I want the Audio Thread started within the class instead of.         //
+// SUMARRY NOTES:                                                         //
+// -> I want the Audio Thread started within the class instead of.        //
 // Externally like it is now. I want this because its fucking             //
 // ugly, like sasquatch's ass... fucking ugly.                            //
 //                                                                        //
-// - I want game logic to become a DLL, I really want the ability         //
+// -> I want game logic to become a DLL, I really want the ability        //
 // where this source code does not real need to be fucked with.           //
 // Maybe some sunny day!                                                  //
 //                                                                        //
-// - What the fuck C++ serious ima have to write this shit out twice      //
+// -> What the fuck C++ serious ima have to write this shit out twice     //
 // for the header file and cpp file. Hella fucking convoluted!!!          //
 // Well maybe I will fucking add something unique for each SUMMARY!!!     //
 //                                                                        //
 //                                                                        //
+//                      ---WEACEDGAMES PERSONNEL---                       //
+//  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | //
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 

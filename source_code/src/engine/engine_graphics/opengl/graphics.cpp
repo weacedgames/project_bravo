@@ -1,24 +1,27 @@
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | //
+//                      ---WEACEDGAMES PERSONNEL---                       //
 //                                                                        //
 //                                                                        //
-// Author: WeAcEd GaMeS                                                   //
-// Version: version.alpha.1.0                                             //
-// File: graphics.cpp                                                     //
+// SUMMARY METADATA:                                                      //
+// -> Author: WeAcEd GaMeS                                                //
+// -> Version: version.alpha.1.0                                          //
+// -> File: graphics.cpp                                                  //
+// -> Date Created: 07-25-2026                                            //
+// -> Date Updated: 07-25-2026                                            //
 //                                                                        //
-// Summary Metadata:                                                      //
-// - Date Created: 07-25-2026                                             //
-// - Date Updated: 07-25-2026                                             //
-//                                                                        //
-// Summary Description:                                                   //
-// - This where the entities a rendered. Entity data is sent from         //
+// SUMMARY DESCRIPTION:                                                   //
+// -> This where the entities a rendered. Entity data is sent from        //
 // game class. Entities with Enable Render set true are rendered.         //
 //                                                                        //
-// Summary Notes:                                                         //
-// - Animation needs to be completed. Still trying to figure that         //
+// SUMARRY NOTES:                                                         //
+// -> Animation needs to be completed. Still trying to figure that        //
 // shit out.                                                              //
 //                                                                        //
 //                                                                        //
+//                      ---WEACEDGAMES PERSONNEL---                       //
+//  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | //
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
@@ -39,6 +42,8 @@ Graphics::Graphics(const int windowWidth,const int windowHeight, glm::vec3 mapDi
     lastFrameTime = 0.0f;
 
 };
+
+
 
 
 int Graphics::initiate()
