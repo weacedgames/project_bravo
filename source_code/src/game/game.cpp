@@ -423,6 +423,25 @@ struct EntityClass
     std::vector<Entity*> entities;
 };
 
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+//            ---WEACEDGAMES PERSONNEL---             //
+//                                                    //
+//                                                    //
+// NOTE ID: 0000 0000 0000                            //
+// NOTE DATE: 07-25-2026                              //
+//                                                    //
+// PROGRAMMER NOTE:                                   //
+// -> This intializes graphics, starting OpenGL.      //
+// Setting up things like input for Mouse and         //
+// Keyboard, window size.                             //
+//                                                    //
+//                                                    //
+//            ---WEACEDGAMES PERSONNEL---             //
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
 
 Game::Game(): graphics(WINDOW_WIDTH, WINDOW_HEIGHT, map_dimmensions), camera(WINDOW_WIDTH, WINDOW_HEIGHT, glm::vec3(0.0f)), keyboard(&graphics), mouse(&graphics, WINDOW_WIDTH, WINDOW_HEIGHT)
 {
@@ -516,8 +535,29 @@ void Game::initiate()
     // WORK IN PROGRESS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // I want to put this thread inside the class
-    // Loading Audio    
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+//            ---WEACEDGAMES PERSONNEL---             //
+//                                                    //
+//                                                    //
+// NOTE ID: 0000 0000 0000                            //
+// NOTE DATE: 07-25-2026                              //
+//                                                    //
+// PROGRAMMER NOTE:                                   //
+// -> ToDo: I want to put the thread                  //
+// inside the audio class                             //
+//                                                    //
+// -> This section for Loading Audio and starting     //
+// the Audio Engine.                                  //
+//                                                    //
+//                                                    //
+//            ---WEACEDGAMES PERSONNEL---             //
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
     AudioFile audioFile_1("./scene/assets/audio/stonemans_melody_rave.wav", 0);
     AudioFile audioFile_2("./scene/assets/audio/stonemans_melody_8bit_exploration.wav", 1);
     AudioFile audioFile_3("./scene/assets/audio/sfx_laser.wav", 2);
@@ -545,19 +585,33 @@ void Game::play()
 
 void Game::mainloop()
 {
-    ///////////////////////////////////////////////////////
-    // Gameplan
-    //////////////////////////////////////////////////////
-    //  
-    //  
-    //  Player 1 (Server)
-    //  Player 2 (Client)
-    //  
-    //  
-    //////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////
 
-    // I dont like the hard coding of this. Will need to create a elegant solution for networking.
+
+
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+//            ---WEACEDGAMES PERSONNEL---             //
+//                                                    //
+//                                                    //
+// NOTE ID: 0000 0000 0000                            //
+// NOTE DATE: 07-25-2026                              //
+//                                                    //
+// PROGRAMMER NOTE:                                   //
+// -> Server Player Layout                            //
+//      - Player 1 (Server)                           //
+//      - Player 2 (Client)                           //
+//                                                    //
+// -> I dont like the hard coding of this.            //
+// Will need to create a elegant solution             //
+// for networking.                                    //
+//                                                    //
+//                                                    //
+//            ---WEACEDGAMES PERSONNEL---             //
+//  |   |   |   |   |   |   |   |   |   |   |   |   | //
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
 
     int selectPlayer = 1;
 
@@ -633,7 +687,6 @@ void Game::mainloop()
         // Logic
         ///////////////////////////////////////
         
-
 
         ///////////////////////////////////////
         // Render
