@@ -5,7 +5,9 @@
 //                                                                        //
 //                                                                        //
 // SUMMARY METADATA:                                                      //
-// -> Author: WeAcEd GaMeS                                                //
+// -> Company: WeAcEd GaMeS                                               //
+// -> Author First Name: The                                              //
+// -> Author First Name: Programmer                                       //
 // -> Version: version.alpha.1.0                                          //
 // -> File: entity.cpp                                                    //
 // -> Date Created: 07-25-2026                                            //

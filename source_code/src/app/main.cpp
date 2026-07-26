@@ -5,7 +5,9 @@
 //                                                                        //
 //                                                                        //
 // SUMMARY METADATA:                                                      //
-// -> Author: WeAcEd GaMeS                                                //
+// -> Company: WeAcEd GaMeS                                               //
+// -> Author First Name: The                                              //
+// -> Author First Name: Programmer                                       //
 // -> Version: version.alpha.1.0                                          //
 // -> File: main.cpp                                                      //
 // -> Date Created: 07-25-2026                                            //
@@ -13,7 +15,7 @@
 //                                                                        //
 // SUMMARY DESCRIPTION:                                                   //
 // -> Main CPP, the making of the baby of this special program            //
-// Here be the birth the making of the this dumb of bitch program         //
+// Here be the birth the making of the this dumb program                  //
 // Here is where the Father OS and EXE/Application get it on, make        //
 // the child game process. And that folks is how babies are made...       //
 // Bow chika wow wow.....                                                 //
@@ -511,6 +513,8 @@
 ///                                  |    | |       |  |        | |     |                                  ///
 ///                                                                                                        ///
 ///                                   It's not personal, it's buisness                                     ///
+///                                             The Executive                                              ///
+///                                                 2025                                                   ///
 ///                                                                                                        ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -553,6 +557,8 @@
 ///                                      | | |       \/       | | |                                        ///
 ///                                                                                                        ///
 ///                                  This shit is fucking up my code >:(                                   ///
+///                                             The Programmer                                             ///
+///                                                 2025                                                   ///
 ///                                                                                                        ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -591,6 +597,8 @@
 ///                                     \    |       |        |/    /                                      ///
 ///                                                                                                        ///
 ///                             Art is the expression of self, peace with you                              ///
+///                                             The Designer                                               ///
+///                                                 2025                                                   ///
 ///                                                                                                        ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
