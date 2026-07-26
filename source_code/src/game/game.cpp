@@ -7,7 +7,7 @@
 // SUMMARY METADATA:                                                      //
 // -> Company: WeAcEd GaMeS                                               //
 // -> Author First Name: The                                              //
-// -> Author Last Name: Programmer                                        //
+// -> Author Last Name: StoneUFODude                                      //
 // -> Version: version.alpha.1.0                                          //
 // -> File: game.cpp                                                      //
 // -> Date Created: 07-25-2026                                            //

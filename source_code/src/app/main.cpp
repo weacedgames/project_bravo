@@ -7,7 +7,7 @@
 // SUMMARY METADATA:                                                      //
 // -> Company: WeAcEd GaMeS                                               //
 // -> Author First Name: The                                              //
-// -> Author Last Name: Programmer                                        //
+// -> Author Last Name: StoneUFODude                                      //
 // -> Version: version.alpha.1.0                                          //
 // -> File: main.cpp                                                      //
 // -> Date Created: 07-25-2026                                            //
@@ -23,7 +23,7 @@
 // SUMARRY NOTES:                                                         //
 // -> I need to finish the ASCII Art here sometime                        //
 //                                                                        //
-// -> The Greys.... They are watching!!!!! Smell the amonia               //
+// -> The Greys.... They are watching!!!!! I can smell the amonia         //
 // coming in the AIR TONIGHT....OoooooHHHHHhhhoooo                        //
 // Duh Duh Duh DUh DuHHHHHH                                               //
 //                                                                        //
@@ -557,7 +557,7 @@
 ///                                      | | |       \/       | | |                                        ///
 ///                                                                                                        ///
 ///                                  This shit is fucking up my code >:(                                   ///
-///                                             The Programmer                                             ///
+///                                             StoneUFODude                                               ///
 ///                                                 2025                                                   ///
 ///                                                                                                        ///
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////

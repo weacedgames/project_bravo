@@ -1,3 +1,569 @@
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+//  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | //
+//                      ---WEACEDGAMES PERSONNEL---                       //
+//                                                                        //
+//                                                                        //
+// SUMMARY METADATA:                                                      //
+// -> Company: WeAcEd GaMeS                                               //
+// -> Author First Name: The                                              //
+// -> Author Last Name: StoneUFODude                                      //
+// -> Version: version.alpha.1.0                                          //
+// -> File: scene_load.cpp                                                //
+// -> Date Created: 07-25-2026                                            //
+// -> Date Updated: 07-25-2026                                            //
+//                                                                        //
+// SUMMARY DESCRIPTION:                                                   //
+// -> This is class loads the entity file. This entity file tells         //
+// the engine how to build a scene. Like how to translate, rotate,        //
+// and scale the entity.                                                  //
+//                                                                        //
+// SUMARRY NOTES:                                                         //
+// -> I eventually want the plain text file that is read in to be         //
+// converted into a JSON file. This will make the the file more stable.   //
+//                                                                        //
+//                                                                        //
+//                      ---WEACEDGAMES PERSONNEL---                       //
+//  |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   | //
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+///                                    ---START OF COMPANY TRANSMISSION---                                 ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    DATE: 07/01/2525        TIME: 07:00 AM                  EMAILID: 0000 0000 0000 0000 0000           ///
+///                                                                                                        ///
+///    UNREAD: [X]             READ: [ ]                                                                   ///
+///                                                                                                        ///
+///    SENDER:                                                                                             ///
+///        STONEDUFODUDE@WEACEDGAMES.COM                                                                   ///
+///                                                                                                        ///
+///    RECIPIENT:                                                                                          ///
+///        EXECUTIVE@WEACEDGAMES.COM                                                                       ///
+///                                                                                                        ///
+///    SUBJECT:                                                                                            ///
+///        LET ME GET THIS STRAIGHT!?!?                                                                    ///
+///                                                                                                        ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                    ---BODY OF COMPANY TRANSMISSION---                                  ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    MESSAGE:                                                                                            ///
+///        DEAR EXECUTIVE,                                                                                 ///
+///            YOUR TELLING ME... YOU WANT A CUSTOM GAME ENGINE WITH MULTIPLAYER                           ///
+///            AND A GAME DEMO IN LESS THAN A YEAR ???                                                     ///
+///                                                                                                        ///
+///            YOU DO UNDERSTAND THAT I ...                                                                ///
+///            A NEVER WORKED IN THE SOFTWARE INDUSTRY                                                     ///
+///            B NEVER MADE A GAME                                                                         ///
+///            C MOST IMPORTANTLY NEVER FUCKING MADE A GAME ENGINE RIGHT !?!?                              ///
+///                                                                                                        ///
+///            THE JOB POSTING SAID JUNIOR SOFTWARE ENGINEER WANTED, MININIUM WAGE                         ///
+///            I WAS EXPECTING TO BE TAUGHT BY MOTHERFUCKERS WITH SOME EXPIERENCE                          ///
+///            YOU SAID NOTHING ABOUT CLIMBING MOUNT "GO FUCK YOURSELF PROGRAMMER"                         ///
+///            YOU SAID NOTHING ABOUT WORKING ON PROJECT "THERE GOES MY SANITY"                            ///
+///                                                                                                        ///
+///            WHAT COCAINE BENDER NIGHT DID YOU CONCIEVE THIS MOSTROSITY IDEA FROM                        ///
+///            WNO IS THE SUCCUBUS THAT POSSESED YOU TO EVEN THINKING OF ATTEMPTING SUCH A                 ///
+///            JOURNEY                                                                                     ///
+///                                                                                                        ///
+///            DID YOU BULLSHIT YOUR WAY TO GETTING THE MONEY TO PAY ME                                    ///
+///            ARE YOU LIVING PROOF THAT EVEN A DUMBASSES CAN SUCCEED IN FINDING A SUCKER???               ///
+///                                                                                                        ///
+///                                                                                                        ///
+///    SINGNATURE:                                                                                         ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                                                                                        ///
+///    SOURCE:                                                                                             ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///    DESTINATION:                                                                                        ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///                                    ---END OF COMPANY TRANSMISSION---                                   ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+///                                    ---START OF COMPANY TRANSMISSION---                                 ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    DATE: 07/01/2525        TIME: 07:00 AM                  EMAILID: 0000 0000 0000 0000 0000           ///
+///                                                                                                        ///
+///    UNREAD: [X]             READ: [ ]                                                                   ///
+///                                                                                                        ///
+///    SENDER:                                                                                             ///
+///        STONEDUFODUDE@WEACEDGAMES.COM                                                                   ///
+///                                                                                                        ///
+///    RECIPIENT:                                                                                          ///
+///        EXECUTIVE@WEACEDGAMES.COM                                                                       ///
+///                                                                                                        ///
+///    SUBJECT:                                                                                            ///
+///        LET ME GET THIS STRAIGHT!?!?                                                                    ///
+///                                                                                                        ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                    ---BODY OF COMPANY TRANSMISSION---                                  ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    MESSAGE:                                                                                            ///
+///        LOOK HERE MOTHERFUCKER                                                                          ///
+///            FIRST... YOU CAME INTO THE INTERVIEW LOOKING LIKE A FUCKING GHOST                           ///
+///            BITCH YOU GOT THEM THICK ASS GLASSES, WITH THE BIG ASS NOSE                                 ///
+///            TO SUPPORT IT                                                                               ///
+///                                                                                                        ///
+///            TRANSLATION MOTHERFUCKER NEVER LEFT HIS HOUSE SINCE THE 4TH GRADE                           ///
+///                                                                                                        ///
+///            THE COMPUTER...                                                                             ///
+///            HAS BEEN YOUR ONLY FRIEND, ONLY GIRLFRIEND, AND ONLY WIFE.                                  ///
+///            YOU WILL DIE AND WILL BE BURIED WITH MOTHERFUCKER                                           ///
+///            YOU'LL DO JUST FINE                                                                         ///
+///                                                                                                        ///
+///            YO NERDY ASS, IS REALLY GONNA STAND HERE AND ACT LIKE NO ONE HAS HIM FIGURED                ///
+///            LMAO!!!                                                                                     ///
+///                                                                                                        ///
+///            SECCOND, I GOT YOU CHEAP DIDNT I???                                                         ///
+///            DONT HATE THE FISHERMAN, HATE THE BAIT                                                      ///
+///                                                                                                        ///
+///                                                                                                        ///
+///    SINGNATURE:                                                                                         ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                                                                                        ///
+///    SOURCE:                                                                                             ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///    DESTINATION:                                                                                        ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///                                    ---END OF COMPANY TRANSMISSION---                                   ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+///                                    ---START OF COMPANY TRANSMISSION---                                 ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    DATE: 07/01/2525        TIME: 07:00 AM                  EMAILID: 0000 0000 0000 0000 0000           ///
+///                                                                                                        ///
+///    UNREAD: [X]             READ: [ ]                                                                   ///
+///                                                                                                        ///
+///    SENDER:                                                                                             ///
+///        STONEDUFODUDE@WEACEDGAMES.COM                                                                   ///
+///                                                                                                        ///
+///    RECIPIENT:                                                                                          ///
+///        EXECUTIVE@WEACEDGAMES.COM                                                                       ///
+///                                                                                                        ///
+///    SUBJECT:                                                                                            ///
+///        LET ME GET THIS STRAIGHT!?!?                                                                    ///
+///                                                                                                        ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                    ---BODY OF COMPANY TRANSMISSION---                                  ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    MESSAGE:                                                                                            ///
+///        PROGRAMMER,                                                                                     ///
+///            I AM GOING TO NEED YOU TO SUBMIT REPORTS ON PROGRESS YOU MADE SO FAR WITH THE               ///
+///            GAME ENGINE, BY THE WAY WHAT IS THE PRODUCT CALLED?                                         ///
+///                                                                                                        ///
+///                                                                                                        ///
+///    SINGNATURE:                                                                                         ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                                                                                        ///
+///    SOURCE:                                                                                             ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///    DESTINATION:                                                                                        ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///                                    ---END OF COMPANY TRANSMISSION---                                   ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+///                                    ---START OF COMPANY TRANSMISSION---                                 ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    DATE: 07/01/2525        TIME: 07:00 AM                  EMAILID: 0000 0000 0000 0000 0000           ///
+///                                                                                                        ///
+///    UNREAD: [X]             READ: [ ]                                                                   ///
+///                                                                                                        ///
+///    SENDER:                                                                                             ///
+///        STONEDUFODUDE@WEACEDGAMES.COM                                                                   ///
+///                                                                                                        ///
+///    RECIPIENT:                                                                                          ///
+///        EXECUTIVE@WEACEDGAMES.COM                                                                       ///
+///                                                                                                        ///
+///    SUBJECT:                                                                                            ///
+///        LET ME GET THIS STRAIGHT!?!?                                                                    ///
+///                                                                                                        ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                    ---BODY OF COMPANY TRANSMISSION---                                  ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    MESSAGE:                                                                                            ///
+///        THE SUMMER OFFERS ME TO SAY HELLO TO MY FELLOW MAN,                                             ///
+///            ITS A HONOR TO SERVE WITH YOU AS YOUR HONARY ART DIRECTOR, BRINGING OUT YOUR                ///
+///            INNER INSPIRATION. TRULY A MARVELOUS DAY INDEED                                             ///
+///                                                                                                        ///
+///        YOUR INSPIRATION,                                                                               ///
+///            THE ART PERSON                                                                              ///
+///                                                                                                        ///
+///                                                                                                        ///
+///    SINGNATURE:                                                                                         ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                                                                                        ///
+///    SOURCE:                                                                                             ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///    DESTINATION:                                                                                        ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///                                    ---END OF COMPANY TRANSMISSION---                                   ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+///                                    ---START OF COMPANY TRANSMISSION---                                 ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    DATE: 07/01/2525        TIME: 07:00 AM                  EMAILID: 0000 0000 0000 0000 0000           ///
+///                                                                                                        ///
+///    UNREAD: [X]             READ: [ ]                                                                   ///
+///                                                                                                        ///
+///    SENDER:                                                                                             ///
+///        STONEDUFODUDE@WEACEDGAMES.COM                                                                   ///
+///                                                                                                        ///
+///    RECIPIENT:                                                                                          ///
+///        EXECUTIVE@WEACEDGAMES.COM                                                                       ///
+///                                                                                                        ///
+///    SUBJECT:                                                                                            ///
+///        LET ME GET THIS STRAIGHT!?!?                                                                    ///
+///                                                                                                        ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                    ---BODY OF COMPANY TRANSMISSION---                                  ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    MESSAGE:                                                                                            ///
+///         WHO THE FUCK IS THIS???                                                                        ///
+///         I HATE YOU, GO FUCK YOURSELF AND GO AWAY                                                       ///
+///                                                                                                        ///
+///                                                                                                        ///
+///    SINGNATURE:                                                                                         ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                                                                                        ///
+///    SOURCE:                                                                                             ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///    DESTINATION:                                                                                        ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///                                    ---END OF COMPANY TRANSMISSION---                                   ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+///                                    ---START OF COMPANY TRANSMISSION---                                 ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    DATE: 07/01/2525        TIME: 07:00 AM                  EMAILID: 0000 0000 0000 0000 0000           ///
+///                                                                                                        ///
+///    UNREAD: [X]             READ: [ ]                                                                   ///
+///                                                                                                        ///
+///    SENDER:                                                                                             ///
+///        STONEDUFODUDE@WEACEDGAMES.COM                                                                   ///
+///                                                                                                        ///
+///    RECIPIENT:                                                                                          ///
+///        EXECUTIVE@WEACEDGAMES.COM                                                                       ///
+///                                                                                                        ///
+///    SUBJECT:                                                                                            ///
+///        LET ME GET THIS STRAIGHT!?!?                                                                    ///
+///                                                                                                        ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                    ---BODY OF COMPANY TRANSMISSION---                                  ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    MESSAGE:                                                                                            ///
+///        YOUR PROGRAMMER ART IS DONKEY SHIT, SHALL I ELLABORATE ???                                      ///
+///        DO YOU ALWAYS HAVE TO BE AN ASSHOLE?                                                            ///
+///                                                                                                        ///
+///                                                                                                        ///
+///    SINGNATURE:                                                                                         ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                                                                                        ///
+///    SOURCE:                                                                                             ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///    DESTINATION:                                                                                        ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///                                    ---END OF COMPANY TRANSMISSION---                                   ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+///                                    ---START OF COMPANY TRANSMISSION---                                 ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    DATE: 07/01/2525        TIME: 07:00 AM                  EMAILID: 0000 0000 0000 0000 0000           ///
+///                                                                                                        ///
+///    UNREAD: [X]             READ: [ ]                                                                   ///
+///                                                                                                        ///
+///    SENDER:                                                                                             ///
+///        STONEDUFODUDE@WEACEDGAMES.COM                                                                   ///
+///                                                                                                        ///
+///    RECIPIENT:                                                                                          ///
+///        EXECUTIVE@WEACEDGAMES.COM                                                                       ///
+///                                                                                                        ///
+///    SUBJECT:                                                                                            ///
+///        LET ME GET THIS STRAIGHT!?!?                                                                    ///
+///                                                                                                        ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                    ---BODY OF COMPANY TRANSMISSION---                                  ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///                                                                                                        ///
+///    MESSAGE:                                                                                            ///
+///        WHAZZ UPPPPPP!!!,                                                                               ///
+///            HAPPY HOLIDAYS!!! WELCOME TO TASK 37, TODAYS GOAL IS CONTINUE                               ///
+///            LAST TASK CURRENTLY THE ENGINE USES A TEXT FILE FOR LOADING ENTITY AND CONFIG               ///
+///            FILES, THIS IS VERY LIMITING. I WANT TO LOAD COMPLEX DATA STRUCTURES. CURRENTLY             ///
+///            FOR CLASSES I HAVE CLASS AND SUBCLASS. I NEED A DATA STUCTURE THATS SIMPLE AND              ///
+///            CAN SUPPORT COMPLEX STRUCTURES. JSON! ITS PLAIN TEXT, COMMON, AND MORE.                     ///
+///            THIS WILL SOLVE ALL LOT THE ISSUES OF CREATING A PLAYER STRUCTURE, THE GOAL IS              ///
+///            TO MAKE IT MORE DATA DRIVEN AND AVOID HARD CODING                                           ///
+///                                                                                                        ///
+///                                                                                                        ///
+///        "GOAL 1"                                                                                        ///
+///            IS TO CONVERT FROM THE CURRENT PLAIN TEXT FILE LOAD SYSTEM FOR ENTITIES AND                 ///
+///            ASSET LOADING TO A JSON FILE SYSTEM                                                         ///
+///                                                                                                        ///
+///                                                                                                        ///
+///        "GOAL 2"                                                                                        ///
+///            FINALLY CHANGE SCENE_LOAD AND SCENE_SAVE TO SOMETHING THAT MAKES BETTER SENSE.              ///
+///            SINCE IT HANDLES ENTITY FILES. IT SHOULD BE ENTITY_LOAD AND ENTITY_SAVE.                    ///
+///            SO THATS THAT OPERATION OUTLINE XD                                                          ///
+///                                                                                                        ///
+///                                                                                                        ///
+///    SINGNATURE:                                                                                         ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///        00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00             ///
+///                                                                                                        ///
+///                TEARLINE                                                        TEARLINE                ///
+///--------------------------------------------------------------------------------------------------------///
+///                TEARLINE                                                        TEARLINE                ///
+///                                                                                                        ///
+///    SOURCE:                                                                                             ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///    DESTINATION:                                                                                        ///
+///        TERMINAL: LOCAL COMPUTER                                                                        ///
+///        IP: 0000:000:0000:0000:0000:0000:0000:0000              PORT: 25                                ///
+///        ADDRESS: WEACEDGAMES HEADQUARTERS , RUFFNECKS STATION                                           ///
+///        PLANET: MOON                                                                                    ///
+///                                                                                                        ///
+///                                    ---END OF COMPANY TRANSMISSION---                                   ///
+///                            ---WEACEDGAMES AUTHORIZED PERSONNEL EYES ONLY---                            ///
+///                                    ---VIOLATORS WILL BE EXECUTED---                                    ///
+///    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   ///
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 #include "scene_load.h"
 
 std::vector<std::vector<std::string>> SceneLoad::loadEntities()
